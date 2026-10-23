@@ -1,0 +1,6 @@
+_id,name,description,logo,isActive,isDeleted,createdBy,createdAt,updatedAt
+e2def2d4f7001e0f15883679,Apple,"Premium smartphones, wearables and ecosystem devices.",,true,false,56bfefe8c01343573320999b,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.165Z
+4dfb472f98c421de247801b3,Samsung,"Galaxy flagship smartphones, tablets and audio gear.",,true,false,56bfefe8c01343573320999b,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.165Z
+be595310737b2a40564fa5a0,Vivo,Innovative camera-focused smartphones for everyday creators.,,true,false,56bfefe8c01343573320999b,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.165Z
+86f998e9448114eb81198521,OnePlus,Flagship killers with fast charging and clean software.,,true,false,56bfefe8c01343573320999b,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.165Z
+2e77e394ba32867044602958,Xiaomi,Value-packed smartphones and smart devices.,,true,false,56bfefe8c01343573320999b,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.165Z

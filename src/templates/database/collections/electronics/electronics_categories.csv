@@ -1,0 +1,6 @@
+_id,name,slug,description,parent,isActive,isDeleted,createdBy,icon,createdAt,updatedAt
+94248725814cc4936439c7ba,Smartphones,smartphones,Smartphones collection.,,true,false,56bfefe8c01343573320999b,smartphone,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.165Z
+37fff4427a374411726b6f92,Tablets,tablets,Tablets collection.,,true,false,56bfefe8c01343573320999b,tablet,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.165Z
+dd275c791b65bfe2d7b37617,Laptops,laptops,Laptops collection.,,true,false,56bfefe8c01343573320999b,laptop,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.165Z
+127881964a63721fbfced0de,Audio,audio,Audio collection.,,true,false,56bfefe8c01343573320999b,headphones,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.165Z
+30952590400c2edb145cd7fc,Wearables,wearables,Wearables collection.,,true,false,56bfefe8c01343573320999b,watch,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.165Z

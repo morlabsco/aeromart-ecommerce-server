@@ -1,0 +1,6 @@
+_id,name,description,logo,isActive,isDeleted,createdBy,createdAt,updatedAt
+23a8190e50138218c803ac27,Attor Time,Precision timepieces for the discerning collector.,,true,false,55b35d91e5ee21b393423f3d,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.313Z
+376b7c0a8922eb1b61f25a2a,Casio,Durable digital and analog watches since 1946.,,true,false,55b35d91e5ee21b393423f3d,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.313Z
+ccc03d6240f9865ff4408c96,Seiko,Japanese watchmaking excellence since 1881.,,true,false,55b35d91e5ee21b393423f3d,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.313Z
+7c2c85937e26589cda34565b,Titan,Everyday elegance from India's leading watch brand.,,true,false,55b35d91e5ee21b393423f3d,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.314Z
+e71bb9e7529cdb3d800bb42c,Fossil,American style meets modern technology.,,true,false,55b35d91e5ee21b393423f3d,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.314Z

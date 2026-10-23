@@ -1,0 +1,6 @@
+_id,name,description,logo,isActive,isDeleted,createdBy,createdAt,updatedAt
+782564385622539340d66b48,Solemate,Premium footwear for every step of your journey.,,true,false,1777596c921a22beeb2e662a,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.289Z
+4eb9533b373378f90ee0fab2,Nike,The world's leading athletic footwear brand.,,true,false,1777596c921a22beeb2e662a,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.289Z
+88ada25a7db97c3f7c7b31a2,Adidas,Performance gear with iconic three stripes.,,true,false,1777596c921a22beeb2e662a,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.289Z
+4f8ebf449d2c098e0ad2eb2b,Puma,Sportstyle footwear for the bold.,,true,false,1777596c921a22beeb2e662a,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.289Z
+2bd09e1a1105c49cf61a7bfb,Bata,Everyday comfort footwear for the family.,,true,false,1777596c921a22beeb2e662a,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.289Z

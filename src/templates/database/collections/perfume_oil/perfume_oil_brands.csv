@@ -1,0 +1,6 @@
+_id,name,description,logo,isActive,isDeleted,createdBy,createdAt,updatedAt
+bbeeafc3024ff48667c87a2a,Attor,Artisanal perfume oils crafted from the world's finest botanicals.,,true,false,fa466a8511f9c519f289bb23,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.183Z
+13e9fb645b07c07308d38f63,Al Haramain,Legendary Arabian fragrance house known for rich oud blends.,,true,false,fa466a8511f9c519f289bb23,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.183Z
+89a199fab190b1baae00d6e6,Swiss Arabian,Fusion of Middle Eastern tradition and modern perfumery.,,true,false,fa466a8511f9c519f289bb23,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.183Z
+62918f4c58dbaac6a2e2333e,Lattafa,Affordable luxury perfumes inspired by oriental heritage.,,true,false,fa466a8511f9c519f289bb23,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.183Z
+68e03b558bd884b679d9569b,Rasasi,"Bold, long-lasting Arabian fragrances for every occasion.",,true,false,fa466a8511f9c519f289bb23,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.183Z

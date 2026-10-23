@@ -1,0 +1,6 @@
+_id,name,slug,description,parent,isActive,isDeleted,createdBy,icon,createdAt,updatedAt
+9712c026363b0a307c6f5580,Oud,oud,Oud collection.,,true,false,fa466a8511f9c519f289bb23,flame,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.183Z
+d2a8d0cedfd80ec4d949e494,Floral,floral,Floral collection.,,true,false,fa466a8511f9c519f289bb23,flower,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.183Z
+541449b19f17706f9f0c4a2b,Fresh,fresh,Fresh collection.,,true,false,fa466a8511f9c519f289bb23,droplet,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.183Z
+3a9f5e8ae31418b6552c3486,Musk,musk,Musk collection.,,true,false,fa466a8511f9c519f289bb23,sparkles,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.183Z
+9e1918f4fdc104966df92c84,Attar,attar,Attar collection.,,true,false,fa466a8511f9c519f289bb23,gem,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.183Z

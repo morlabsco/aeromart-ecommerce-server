@@ -1,0 +1,6 @@
+_id,name,description,logo,isActive,isDeleted,createdBy,createdAt,updatedAt
+1db291799dde4f15a714cf5f,Attor,Premium clothing for the modern individual.,,true,false,e63ee603c66c64bfc0a2cefd,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.214Z
+86bf5b38f6dc644d0c6533a8,Denim Co.,Heritage denim and casual wear.,,true,false,e63ee603c66c64bfc0a2cefd,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.214Z
+18d49092a9d29832fba41fe9,Urban Threads,"Streetwear with a clean, modern cut.",,true,false,e63ee603c66c64bfc0a2cefd,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.214Z
+8c3953216fc604a76674e465,Aristo,Classic tailoring for formal occasions.,,true,false,e63ee603c66c64bfc0a2cefd,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.214Z
+6a6e242e88c54e78f76382de,Loom,Sustainable basics crafted from natural fibers.,,true,false,e63ee603c66c64bfc0a2cefd,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.214Z

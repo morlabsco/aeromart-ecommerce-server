@@ -1,0 +1,6 @@
+_id,name,slug,description,parent,isActive,isDeleted,createdBy,icon,createdAt,updatedAt
+c74bf9b84bd0b5b23e43763d,Running,running,Running collection.,,true,false,1777596c921a22beeb2e662a,zap,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.289Z
+cf15bcd5dec1718a2f1857f7,Sneakers,sneakers,Sneakers collection.,,true,false,1777596c921a22beeb2e662a,shoe,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.289Z
+06fec85f802939e438400a02,Formal,formal,Formal collection.,,true,false,1777596c921a22beeb2e662a,briefcase,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.289Z
+61d3f1d1dbaf7bb9bd19e21e,Sports,sports,Sports collection.,,true,false,1777596c921a22beeb2e662a,activity,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.289Z
+3c4db8158d5a296de0194339,Sandals,sandals,Sandals collection.,,true,false,1777596c921a22beeb2e662a,sun,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.290Z

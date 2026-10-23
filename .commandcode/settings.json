@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__codebase-memory-mcp__get_code_snippet",
+      "mcp__codebase-memory-mcp__search_code",
+      "mcp__codebase-memory-mcp__search_graph",
+      "mcp__codebase-memory-mcp__index_repository",
+      "mcp__codebase-memory-mcp__get_architecture",
+      "Shell(npx tsc --noEmit 2 >& 1)",
+      "Shell(cd \"M:\\Development\\Agency\\eCommerce Demo Projects\\aeromart-ecommerce-server\" && dir /b node_modules\\sslcommerz-lts 2>nul && echo EXISTS || echo NOT_FOUND)",
+      "Shell(npm:*)",
+      "Shell(npx -p typescript tsc --noEmit 2 >& 1)",
+      "Shell(.node_modules.bintsc:*)",
+      "Shell(npx --package typescript@5.7.2 tsc --noEmit 2 >& 1)",
+      "Shell(findstr:*)",
+      "Shell(npx tsc --noEmit)",
+      "Shell(powershell -NoProfile -Command \"(Get-Content 'src\\docs\\project-tracking\\backend-usage-guide.md' -Raw) -replace '### 17\\.', '### 18.' | Set-Content 'src\\docs\\project-tracking\\backend-usage-guide.md' -NoNewline\")",
+      "Shell(node src/templates/database/collections/generate-seed.js)"
+    ],
+    "deny": [],
+    "defaultMode": "default"
+  }
+}

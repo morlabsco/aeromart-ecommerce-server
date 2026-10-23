@@ -1,0 +1,6 @@
+_id,name,slug,description,parent,isActive,isDeleted,createdBy,icon,createdAt,updatedAt
+cb4baa55882c0ef6443a92fc,Sunglasses,sunglasses,Sunglasses collection.,,true,false,eacf1379c72ea3eba8d8fff5,sun,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.233Z
+fe1878d5a97b09f427dd25bf,Optical,optical,Optical collection.,,true,false,eacf1379c72ea3eba8d8fff5,eye,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.233Z
+869a4f4ca52f977b8955786c,Sports,sports,Sports collection.,,true,false,eacf1379c72ea3eba8d8fff5,activity,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.233Z
+02bfbaac078c31b9cc1d2b5d,Blue Light,blue-light,Blue Light collection.,,true,false,eacf1379c72ea3eba8d8fff5,monitor,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.233Z
+714363911c6dfee2baaafe24,Kids,kids,Kids collection.,,true,false,eacf1379c72ea3eba8d8fff5,smile,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.233Z

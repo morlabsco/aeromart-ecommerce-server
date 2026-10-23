@@ -1,0 +1,6 @@
+_id,name,slug,description,parent,isActive,isDeleted,createdBy,icon,createdAt,updatedAt
+a6a4c486659043804e84ce3f,Analog,analog,Analog collection.,,true,false,55b35d91e5ee21b393423f3d,clock,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.314Z
+c61e4a4af818d6bbfe435ac9,Digital,digital,Digital collection.,,true,false,55b35d91e5ee21b393423f3d,monitor,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.314Z
+796664252a3825df72de0ff0,Smart,smart,Smart collection.,,true,false,55b35d91e5ee21b393423f3d,watch,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.314Z
+7d9d4ae2fc4671ca4fbed9f4,Luxury,luxury,Luxury collection.,,true,false,55b35d91e5ee21b393423f3d,diamond,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.314Z
+341d3cb92032824a9044d59e,Sports,sports,Sports collection.,,true,false,55b35d91e5ee21b393423f3d,activity,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.314Z

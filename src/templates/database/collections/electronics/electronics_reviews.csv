@@ -1,0 +1,67 @@
+_id,rating,description,user,product,isFlagged,flaggedReason,isVerifiedPurchase,createdAt,updatedAt
+f48639b7b0231af303d01906,5,Absolutely love it! Exceeded all my expectations. Worth every taka.,7135bd03c80d5575642140a5,00c82f6f92d82c883fb70eb5,false,,true,2026-05-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+476435035af0d94f4903c356,5,Absolutely love it! Exceeded all my expectations. Worth every taka.,4efed9f5abd7a4ab7aa1a264,f0735df9bb34a5c9d7163369,false,,true,2026-06-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+41927451b739890fe62ef139,5,Flawless experience from order to delivery. Highly recommended.,1529cc923661c68d080d34fe,f0735df9bb34a5c9d7163369,false,,true,2026-06-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+a9abe47eebae08351783148d,5,Best purchase I've made this year. The performance is outstanding.,bafc2d80accb2a0ed5960838,f0735df9bb34a5c9d7163369,false,,true,2026-06-12T12:00:00.000Z,2026-08-15T16:45:41.169Z
+bdc3a8eb6f22cf51dd94a0a1,5,Perfect in every way. Build quality is top notch.,acdeb55be437061fdc9bb97a,f0735df9bb34a5c9d7163369,false,,true,2026-06-13T12:00:00.000Z,2026-08-15T16:45:41.169Z
+5cd57db5513ce0ee1081c4ba,5,Absolutely love it! Exceeded all my expectations. Worth every taka.,1529cc923661c68d080d34fe,c77a6cf5138fce720d171125,false,,true,2026-07-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+4903cb81ffb6a3b7cd23db00,5,Flawless experience from order to delivery. Highly recommended.,bafc2d80accb2a0ed5960838,c77a6cf5138fce720d171125,false,,true,2026-07-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+4f446805c3cdcb5a5b2e4075,5,Best purchase I've made this year. The performance is outstanding.,acdeb55be437061fdc9bb97a,c77a6cf5138fce720d171125,false,,true,2026-07-12T12:00:00.000Z,2026-08-15T16:45:41.169Z
+bb535f4e2f5f4e7ba7ab8df1,4,Really good device for the price. Happy with the purchase.,197f592dd325693b20ef2617,c77a6cf5138fce720d171125,false,,true,2026-07-13T12:00:00.000Z,2026-08-15T16:45:41.169Z
+8b9901d287f24b82ad9d99ac,4,"Nice product, matches the description. Delivery was quick too.",f649169356dd807378f293bf,c77a6cf5138fce720d171125,false,,true,2026-07-14T12:00:00.000Z,2026-08-15T16:45:41.169Z
+17bfc64913602c7ebe67d521,4,Great product overall. A couple of minor things but very good value.,a1c347f6bb3d1b5e990ae906,c77a6cf5138fce720d171125,false,,true,2026-07-15T12:00:00.000Z,2026-08-15T16:45:41.169Z
+fdd6fd47b577039282718f94,3,It's okay. Decent for the price but nothing exceptional.,7135bd03c80d5575642140a5,c77a6cf5138fce720d171125,false,,false,2026-07-16T12:00:00.000Z,2026-08-15T16:45:41.169Z
+b7e643c4045a2030dd8d1f68,5,Absolutely love it! Exceeded all my expectations. Worth every taka.,bafc2d80accb2a0ed5960838,7a175341c438ab6a7e0dbf91,false,,true,2026-05-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+6e9d4d037efd937674b3d833,5,Flawless experience from order to delivery. Highly recommended.,acdeb55be437061fdc9bb97a,7a175341c438ab6a7e0dbf91,false,,true,2026-05-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+d99cda97b7ff3dea588f0853,5,Absolutely love it! Exceeded all my expectations. Worth every taka.,acdeb55be437061fdc9bb97a,8e26e8973b015b102ba88a7d,false,,true,2026-06-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+3ff98bc4d9b51e07211b2656,4,"Very good quality, works exactly as expected. Would buy again.",197f592dd325693b20ef2617,8e26e8973b015b102ba88a7d,false,,true,2026-06-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+b97ea107b9e5a15498d2b8d9,4,Solid performance and great battery life. Recommended.,f649169356dd807378f293bf,8e26e8973b015b102ba88a7d,false,,true,2026-06-12T12:00:00.000Z,2026-08-15T16:45:41.169Z
+66bd0e7eae33644e1edc31cf,4,Really good device for the price. Happy with the purchase.,a1c347f6bb3d1b5e990ae906,8e26e8973b015b102ba88a7d,false,,true,2026-06-13T12:00:00.000Z,2026-08-15T16:45:41.169Z
+2aff8892e03fe6b8d6b47287,3,"Average experience. Some features are nice, others fall short.",7135bd03c80d5575642140a5,8e26e8973b015b102ba88a7d,false,,true,2026-06-14T12:00:00.000Z,2026-08-15T16:45:41.169Z
+5a8212497c4cbb22bd40c694,4,Great product overall. A couple of minor things but very good value.,197f592dd325693b20ef2617,78e22b9c17f8cb2934769a1f,false,,true,2026-07-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+ce1f7e648a934f883ee4b920,4,"Very good quality, works exactly as expected. Would buy again.",f649169356dd807378f293bf,78e22b9c17f8cb2934769a1f,false,,true,2026-07-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+427f921cfabfbe45ec71c451,4,Solid performance and great battery life. Recommended.,a1c347f6bb3d1b5e990ae906,78e22b9c17f8cb2934769a1f,false,,true,2026-07-12T12:00:00.000Z,2026-08-15T16:45:41.169Z
+ffa24911b25a48ea892c0b98,3,It's okay. Decent for the price but nothing exceptional.,7135bd03c80d5575642140a5,78e22b9c17f8cb2934769a1f,false,,false,2026-07-13T12:00:00.000Z,2026-08-15T16:45:41.169Z
+1b2dbd78fcf7e7faab17bc80,2,Not quite what I expected. A few issues with the battery.,4efed9f5abd7a4ab7aa1a264,78e22b9c17f8cb2934769a1f,false,,true,2026-07-14T12:00:00.000Z,2026-08-15T16:45:41.169Z
+0b6e30c68c8af0849f909a17,5,Superb quality and lightning fast delivery. Very happy!,1529cc923661c68d080d34fe,78e22b9c17f8cb2934769a1f,false,,true,2026-07-15T12:00:00.000Z,2026-08-15T16:45:41.169Z
+2c2cb0af240d644c47f936ef,5,This is my second order from this store. Never disappoints.,bafc2d80accb2a0ed5960838,78e22b9c17f8cb2934769a1f,false,,true,2026-07-16T12:00:00.000Z,2026-08-15T16:45:41.169Z
+0125988ae98120cc1084a5c9,5,Outstanding value for money. Genuinely impressed.,acdeb55be437061fdc9bb97a,78e22b9c17f8cb2934769a1f,false,,true,2026-07-17T12:00:00.000Z,2026-08-15T16:45:41.169Z
+27d3209c058e1d7c084325df,4,Great product overall. A couple of minor things but very good value.,f649169356dd807378f293bf,941d17d91df171d6df8b7450,false,,true,2026-05-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+1eb8701566d66c42a46b8da5,4,"Very good quality, works exactly as expected. Would buy again.",a1c347f6bb3d1b5e990ae906,941d17d91df171d6df8b7450,false,,true,2026-05-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+78484186ed2fde4fcdd27f24,3,Good product but the packaging could be better.,7135bd03c80d5575642140a5,941d17d91df171d6df8b7450,false,,true,2026-05-12T12:00:00.000Z,2026-08-15T16:45:41.169Z
+e3cc59f2402441793f31a018,4,Great product overall. A couple of minor things but very good value.,a1c347f6bb3d1b5e990ae906,47115fccc2aea5f4f603a00b,false,,true,2026-06-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+7731005eb8bbf9708aa94457,3,"Average experience. Some features are nice, others fall short.",7135bd03c80d5575642140a5,47115fccc2aea5f4f603a00b,false,,true,2026-06-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+2ce6bc5b370f8b57b3fe6ba3,2,Not quite what I expected. A few issues with the battery.,4efed9f5abd7a4ab7aa1a264,47115fccc2aea5f4f603a00b,false,,true,2026-06-12T12:00:00.000Z,2026-08-15T16:45:41.169Z
+ca28f297fbbc1dc8ea85fc7e,5,Perfect in every way. Build quality is top notch.,1529cc923661c68d080d34fe,47115fccc2aea5f4f603a00b,false,,true,2026-06-13T12:00:00.000Z,2026-08-15T16:45:41.169Z
+656fe21c9c0ccb89c8bd53a0,5,"Amazing product, exactly as described. Five stars!",bafc2d80accb2a0ed5960838,47115fccc2aea5f4f603a00b,false,,true,2026-06-14T12:00:00.000Z,2026-08-15T16:45:41.169Z
+3c11e41fadcb7cbe2eacf638,5,Superb quality and lightning fast delivery. Very happy!,acdeb55be437061fdc9bb97a,47115fccc2aea5f4f603a00b,false,,true,2026-06-15T12:00:00.000Z,2026-08-15T16:45:41.169Z
+672294c917caa4b360185f50,3,It's okay. Decent for the price but nothing exceptional.,7135bd03c80d5575642140a5,3ccfb9e621b2c89183d08b36,false,,false,2026-07-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+bbba603f9575351cd1b4b11b,2,Not quite what I expected. A few issues with the battery.,4efed9f5abd7a4ab7aa1a264,e26945dc940cceab4ce4bd0e,false,,false,2026-05-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+7ea5a0d0ae8b1438de20f5c4,5,Flawless experience from order to delivery. Highly recommended.,1529cc923661c68d080d34fe,e26945dc940cceab4ce4bd0e,false,,true,2026-05-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+50ea63bb28c39b58d6ffceed,5,Best purchase I've made this year. The performance is outstanding.,bafc2d80accb2a0ed5960838,e26945dc940cceab4ce4bd0e,false,,true,2026-05-12T12:00:00.000Z,2026-08-15T16:45:41.169Z
+19767d8d57cec939a2f76fe7,5,Perfect in every way. Build quality is top notch.,acdeb55be437061fdc9bb97a,e26945dc940cceab4ce4bd0e,false,,true,2026-05-13T12:00:00.000Z,2026-08-15T16:45:41.169Z
+c3f940342eb45e5d2ccb8111,5,Absolutely love it! Exceeded all my expectations. Worth every taka.,1529cc923661c68d080d34fe,b2e6b5abff0b1f03c4a91315,false,,true,2026-06-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+4c326da68e7b01805f90169f,5,Flawless experience from order to delivery. Highly recommended.,bafc2d80accb2a0ed5960838,b2e6b5abff0b1f03c4a91315,false,,true,2026-06-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+b36ace5633321c7e9b505744,5,Best purchase I've made this year. The performance is outstanding.,acdeb55be437061fdc9bb97a,b2e6b5abff0b1f03c4a91315,false,,true,2026-06-12T12:00:00.000Z,2026-08-15T16:45:41.169Z
+edb8c59a8a9f22216ebbce81,5,Perfect in every way. Build quality is top notch.,197f592dd325693b20ef2617,b2e6b5abff0b1f03c4a91315,false,,true,2026-06-13T12:00:00.000Z,2026-08-15T16:45:41.169Z
+e946eab6d3f35f06fea9599e,5,"Amazing product, exactly as described. Five stars!",f649169356dd807378f293bf,b2e6b5abff0b1f03c4a91315,false,,true,2026-06-14T12:00:00.000Z,2026-08-15T16:45:41.169Z
+030eefb7e4bd9e8af6964886,4,Great product overall. A couple of minor things but very good value.,a1c347f6bb3d1b5e990ae906,b2e6b5abff0b1f03c4a91315,false,,true,2026-06-15T12:00:00.000Z,2026-08-15T16:45:41.169Z
+81aaf258b5c3cf7fa8d3eea2,4,"Very good quality, works exactly as expected. Would buy again.",7135bd03c80d5575642140a5,b2e6b5abff0b1f03c4a91315,false,,true,2026-06-16T12:00:00.000Z,2026-08-15T16:45:41.169Z
+a0ae2852098e170529c75c28,5,Absolutely love it! Exceeded all my expectations. Worth every taka.,bafc2d80accb2a0ed5960838,2637fcb38bdd3b2488cbb1b1,false,,true,2026-07-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+d229646e4236e42a80b6d4fc,5,Flawless experience from order to delivery. Highly recommended.,acdeb55be437061fdc9bb97a,2637fcb38bdd3b2488cbb1b1,false,,true,2026-07-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+8f890c899228b8e5306f21bd,5,Absolutely love it! Exceeded all my expectations. Worth every taka.,acdeb55be437061fdc9bb97a,53d3431af56932ff5b4291f9,false,,true,2026-05-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+75c00a8e8f0f2bd5bbd3856a,5,Flawless experience from order to delivery. Highly recommended.,197f592dd325693b20ef2617,53d3431af56932ff5b4291f9,false,,true,2026-05-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+8f867d99a47220cae802f0e7,5,Best purchase I've made this year. The performance is outstanding.,f649169356dd807378f293bf,53d3431af56932ff5b4291f9,false,,true,2026-05-12T12:00:00.000Z,2026-08-15T16:45:41.169Z
+6de6f15f1a591daab7013b19,4,Really good device for the price. Happy with the purchase.,a1c347f6bb3d1b5e990ae906,53d3431af56932ff5b4291f9,false,,true,2026-05-13T12:00:00.000Z,2026-08-15T16:45:41.169Z
+28b197958081ebb38b448c46,4,"Nice product, matches the description. Delivery was quick too.",7135bd03c80d5575642140a5,53d3431af56932ff5b4291f9,false,,true,2026-05-14T12:00:00.000Z,2026-08-15T16:45:41.169Z
+703e155ecfc8643c03f087db,5,Absolutely love it! Exceeded all my expectations. Worth every taka.,197f592dd325693b20ef2617,a7b53e22a23ab5ee50c372d4,false,,true,2026-06-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+801114898865a301d602494b,5,Flawless experience from order to delivery. Highly recommended.,f649169356dd807378f293bf,a7b53e22a23ab5ee50c372d4,false,,true,2026-06-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+6c0f1d39fcd38c8d234a6122,4,Solid performance and great battery life. Recommended.,a1c347f6bb3d1b5e990ae906,a7b53e22a23ab5ee50c372d4,false,,true,2026-06-12T12:00:00.000Z,2026-08-15T16:45:41.169Z
+cf47677b094701969fd35990,4,Really good device for the price. Happy with the purchase.,7135bd03c80d5575642140a5,a7b53e22a23ab5ee50c372d4,false,,true,2026-06-13T12:00:00.000Z,2026-08-15T16:45:41.169Z
+91a52bfb4dda42f25bd7ec10,4,"Nice product, matches the description. Delivery was quick too.",4efed9f5abd7a4ab7aa1a264,a7b53e22a23ab5ee50c372d4,false,,true,2026-06-14T12:00:00.000Z,2026-08-15T16:45:41.169Z
+fad58f12d8fcef9685112935,3,Good product but the packaging could be better.,1529cc923661c68d080d34fe,a7b53e22a23ab5ee50c372d4,false,,true,2026-06-15T12:00:00.000Z,2026-08-15T16:45:41.169Z
+9d85dbfd5fd83e11c091113c,2,Not quite what I expected. A few issues with the battery.,bafc2d80accb2a0ed5960838,a7b53e22a23ab5ee50c372d4,false,,false,2026-06-16T12:00:00.000Z,2026-08-15T16:45:41.169Z
+68fd6f5d6039a45c376600f7,5,Outstanding value for money. Genuinely impressed.,acdeb55be437061fdc9bb97a,a7b53e22a23ab5ee50c372d4,false,,true,2026-06-17T12:00:00.000Z,2026-08-15T16:45:41.169Z
+c1d9a433fe7ca32908dcf01b,5,Absolutely love it! Exceeded all my expectations. Worth every taka.,f649169356dd807378f293bf,1d91bcc47ff9c6ea8ce6d60d,false,,true,2026-07-10T12:00:00.000Z,2026-08-15T16:45:41.169Z
+306d4040949a92ae0959ede1,4,"Very good quality, works exactly as expected. Would buy again.",a1c347f6bb3d1b5e990ae906,1d91bcc47ff9c6ea8ce6d60d,false,,true,2026-07-11T12:00:00.000Z,2026-08-15T16:45:41.169Z
+7718a1980ed31f5fcd9306cc,4,Solid performance and great battery life. Recommended.,7135bd03c80d5575642140a5,1d91bcc47ff9c6ea8ce6d60d,false,,true,2026-07-12T12:00:00.000Z,2026-08-15T16:45:41.169Z

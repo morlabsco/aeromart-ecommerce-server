@@ -1,0 +1,272 @@
+{
+    "_id": "singleton",
+    "brand": {
+        "name": "Attor",
+        "tagline": "Essence of Distinction",
+        "description": "Premium perfume oils crafted for the discerning.",
+        "niche": "perfume_oil",
+        "nicheLabel": "Perfume Oil",
+        "logo": "/demo/perfume-oil/logo.png",
+        "favicon": ""
+    },
+    "theme": {
+        "colors": {
+            "background": "oklch(1 0 0)",
+            "foreground": "oklch(0.145 0 0)",
+            "card": "oklch(1 0 0)",
+            "cardForeground": "oklch(0.145 0 0)",
+            "popover": "oklch(1 0 0)",
+            "popoverForeground": "oklch(0.145 0 0)",
+            "primary": "oklch(0.514 0.222 16.935)",
+            "primaryForeground": "oklch(0.969 0.015 12.422)",
+            "secondary": "oklch(0.967 0.001 286.375)",
+            "secondaryForeground": "oklch(0.21 0.006 285.885)",
+            "muted": "oklch(0.97 0 0)",
+            "mutedForeground": "oklch(0.556 0 0)",
+            "accent": "oklch(0.97 0 0)",
+            "accentForeground": "oklch(0.205 0 0)",
+            "destructive": "oklch(0.577 0.245 27.325)",
+            "border": "oklch(0.922 0 0)",
+            "input": "oklch(0.922 0 0)",
+            "ring": "oklch(0.708 0 0)",
+            "chart1": "oklch(0.81 0.117 11.638)",
+            "chart2": "oklch(0.645 0.246 16.439)",
+            "chart3": "oklch(0.586 0.253 17.585)",
+            "chart4": "oklch(0.514 0.222 16.935)",
+            "chart5": "oklch(0.455 0.188 13.697)",
+            "sidebar": "oklch(0.985 0 0)",
+            "sidebarForeground": "oklch(0.145 0 0)",
+            "sidebarPrimary": "oklch(0.586 0.253 17.585)",
+            "sidebarPrimaryForeground": "oklch(0.969 0.015 12.422)",
+            "sidebarAccent": "oklch(0.97 0 0)",
+            "sidebarAccentForeground": "oklch(0.205 0 0)",
+            "sidebarBorder": "oklch(0.922 0 0)",
+            "sidebarRing": "oklch(0.708 0 0)"
+        },
+        "dark": {
+            "enabled": true,
+            "colors": {
+                "background": "oklch(0.145 0 0)",
+                "foreground": "oklch(0.985 0 0)",
+                "card": "oklch(0.205 0 0)",
+                "cardForeground": "oklch(0.985 0 0)",
+                "popover": "oklch(0.205 0 0)",
+                "popoverForeground": "oklch(0.985 0 0)",
+                "primary": "oklch(0.455 0.188 13.697)",
+                "primaryForeground": "oklch(0.969 0.015 12.422)",
+                "secondary": "oklch(0.274 0.006 286.033)",
+                "secondaryForeground": "oklch(0.985 0 0)",
+                "muted": "oklch(0.269 0 0)",
+                "mutedForeground": "oklch(0.708 0 0)",
+                "accent": "oklch(0.269 0 0)",
+                "accentForeground": "oklch(0.985 0 0)",
+                "destructive": "oklch(0.704 0.191 22.216)",
+                "border": "oklch(1 0 0 / 10%)",
+                "input": "oklch(1 0 0 / 15%)",
+                "ring": "oklch(0.556 0 0)",
+                "chart1": "oklch(0.81 0.117 11.638)",
+                "chart2": "oklch(0.645 0.246 16.439)",
+                "chart3": "oklch(0.586 0.253 17.585)",
+                "chart4": "oklch(0.514 0.222 16.935)",
+                "chart5": "oklch(0.455 0.188 13.697)",
+                "sidebar": "oklch(0.21 0.006 285.885)",
+                "sidebarForeground": "oklch(0.985 0 0)",
+                "sidebarPrimary": "oklch(0.645 0.246 16.439)",
+                "sidebarPrimaryForeground": "oklch(0.969 0.015 12.422)",
+                "sidebarAccent": "oklch(0.269 0 0)",
+                "sidebarAccentForeground": "oklch(0.985 0 0)",
+                "sidebarBorder": "oklch(1 0 0 / 10%)",
+                "sidebarRing": "oklch(0.556 0 0)"
+            }
+        },
+        "fonts": {
+            "family": "Cormorant Garamond",
+            "mono": "ui-monospace, SFMono-Regular, Menlo, monospace",
+            "sizes": {
+                "h1": "2.5rem",
+                "h2": "2rem",
+                "h3": "1.5rem",
+                "body": "1rem",
+                "small": "0.875rem"
+            }
+        },
+        "radius": "0.625rem",
+        "globalCss": ""
+    },
+    "hero": {
+        "slides": [
+            {
+                "image": "/demo/perfume-oil/banner/hero-1.webp",
+                "headline": "Discover Your Signature Scent",
+                "subtext": "Explore our curated collection of artisanal perfume oils - from deep, smoky ouds to luminous florals. Find the fragrance that speaks to you.",
+                "ctaText": "Explore Collection",
+                "ctaLink": "/products",
+                "order": 0
+            },
+            {
+                "image": "/demo/perfume-oil/banner/hero-2.webp",
+                "headline": "The Art of Oud",
+                "subtext": "Journey through our collection of rare and precious oud oils - aged, layered, and utterly unforgettable.",
+                "ctaText": "Shop Oud Collection",
+                "ctaLink": "/products?category=oud",
+                "order": 1
+            },
+            {
+                "image": "/demo/perfume-oil/banner/hero-3.webp",
+                "headline": "Bloom in Every Drop",
+                "subtext": "From Damask rose to jasmine sambac - our floral attars capture nature's most exquisite moments in every bottle.",
+                "ctaText": "Shop Florals",
+                "ctaLink": "/products?category=floral",
+                "order": 2
+            }
+        ]
+    },
+    "testimonials": {
+        "heading": "What Our Customers Say",
+        "items": [
+            {
+                "name": "Ayesha Rahman",
+                "role": "Fragrance Collector",
+                "quote": "The Midnight Oud is absolutely intoxicating. I've never worn anything like it - one drop lasts all day and I get stopped by strangers asking what I'm wearing.",
+                "rating": 5,
+                "avatar": "/demo/perfume-oil/testimonials/tm-3.jpg",
+                "order": 0
+            },
+            {
+                "name": "Omar Hassan",
+                "role": "Perfumery Enthusiast",
+                "quote": "I've been collecting ouds for over a decade and the quality here rivals houses that charge five times the price. The Oud & Rose Sublime is a work of art.",
+                "rating": 5,
+                "avatar": "/demo/perfume-oil/testimonials/tm-1.jpg",
+                "order": 1
+            },
+            {
+                "name": "Priya Kapoor",
+                "role": "Lifestyle Blogger",
+                "quote": "The Damask Rose Attar is the most beautiful rose fragrance I've ever worn. It's real rose - not synthetic - and it blooms differently on my skin every hour.",
+                "rating": 5,
+                "avatar": "/demo/perfume-oil/testimonials/tm-2.jpeg",
+                "order": 2
+            },
+            {
+                "name": "Daniel Choi",
+                "role": "Creative Director",
+                "quote": "White Tea & Musk is my daily signature now. Clean, subtle, but somehow everyone notices. It's the kind of scent that makes people lean in closer.",
+                "rating": 5,
+                "avatar": "/demo/perfume-oil/testimonials/tm-4.jpeg",
+                "order": 3
+            }
+        ]
+    },
+    "navbar": {
+        "links": [
+            {
+                "label": "Home",
+                "url": "/",
+                "order": 0,
+                "children": []
+            },
+            {
+                "label": "Products",
+                "url": "/products",
+                "order": 1,
+                "children": []
+            },
+            {
+                "label": "About",
+                "url": "/about",
+                "order": 2,
+                "children": []
+            },
+            {
+                "label": "Contact",
+                "url": "/contact",
+                "order": 3,
+                "children": []
+            }
+        ],
+        "groups": {
+            "public": [
+                { "label": "Home", "url": "/", "order": 0, "children": [] },
+                { "label": "Products", "url": "/products", "order": 1, "children": [] },
+                { "label": "About", "url": "/about", "order": 2, "children": [] },
+                { "label": "Contact", "url": "/contact", "order": 3, "children": [] }
+            ],
+            "auth": [
+                { "label": "Login", "url": "/login", "order": 0, "children": [] },
+                { "label": "Sign Up", "url": "/signup", "order": 1, "children": [] }
+            ],
+            "customer": [
+                { "label": "My Account", "url": "/dashboard/customer", "order": 0, "children": [] }
+            ],
+            "admin": [
+                { "label": "Admin Dashboard", "url": "/dashboard/admin", "order": 0, "children": [] }
+            ]
+        }
+    },
+    "footer": {
+        "description": "Artisanal perfume oils crafted for those who seek the extraordinary. Pure ingredients, timeless scents, and a story in every drop.",
+        "columns": [
+            {
+                "title": "Quick Links",
+                "links": [
+                    { "label": "Products", "url": "/products" },
+                    { "label": "About", "url": "/about" },
+                    { "label": "Contact", "url": "/contact" },
+                    { "label": "Dashboard", "url": "/dashboard" }
+                ]
+            },
+            {
+                "title": "Contact",
+                "links": [
+                    { "label": "123 Perfume Avenue, New York, NY 10001", "url": "/contact" },
+                    { "label": "+1 (555) 123-4567", "url": "/contact" },
+                    { "label": "hello@attor.com", "url": "/contact" }
+                ]
+            }
+        ],
+        "socialLinks": [
+            { "platform": "twitter", "url": "https://twitter.com/attor" },
+            { "platform": "instagram", "url": "https://instagram.com/attor" },
+            { "platform": "facebook", "url": "https://facebook.com/attor" }
+        ],
+        "copyrightText": "© 2026 Attor. All rights reserved.",
+        "newsletter": {
+            "enabled": true,
+            "heading": "Stay in the loop"
+        }
+    },
+    "contact": {
+        "address": "123 Perfume Avenue, New York, NY 10001",
+        "phone": "+1 (555) 123-4567",
+        "email": "hello@attor.com",
+        "hours": "Mon–Sat 9am–6pm",
+        "mapEmbedUrl": "",
+        "social": {
+            "twitter": "https://twitter.com/attor",
+            "instagram": "https://instagram.com/attor",
+            "facebook": "https://facebook.com/attor"
+        }
+    },
+    "about": {
+        "story": "Attor began with a passion for the ancient art of perfumery. Rooted in tradition yet crafted for the modern connoisseur, each of our perfume oils is a journey - from the misty forests of Assam to the sun-drenched gardens of Grasse. We work directly with distillers and growers to bring you the purest expressions of nature's most precious botanicals.",
+        "mission": "We believe fragrance is the most intimate form of expression. Our mission is to make artisanal perfume oils accessible - offering uncompromising quality, ethical sourcing, and a sensory experience that transcends the ordinary.",
+        "image": "/demo/perfume-oil/about.jpeg",
+        "stats": [
+            { "label": "Founded", "value": "2018" },
+            { "label": "Oud Variants", "value": "30+" }
+        ]
+    },
+    "limitedOffer": {
+        "enabled": true,
+        "badge": "Limited Time",
+        "title": "Midnight Oud",
+        "subtitle": "Aged 12 months in teak barrels. Rare Assamese and Cambodian oud - now available at an exclusive introductory price.",
+        "ctaText": "Shop Now",
+        "ctaLink": "/products/midnight-oud",
+        "image": "/demo/perfume-oil/products/product-1.webp",
+        "endsAt": "2026-08-31T23:59:59.000Z"
+    },
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+}

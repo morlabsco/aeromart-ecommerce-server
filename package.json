@@ -1,0 +1,55 @@
+{
+  "name": "aeromart-ecommerce-server",
+  "version": "1.0.0",
+  "description": "A multi niche e-commerce web application server.",
+  "main": "server.js",
+  "repository": "https://github.com/mahfuzzayn/",
+  "author": "Morlabs Team",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "create-module": "npx ts-node src/scripts/createModule.ts",
+    "seed:settings": "npx ts-node src/scripts/seedSettings.ts",
+    "deploy": "yarn build && vercel && vercel --prod"
+  },
+  "dependencies": {
+    "@types/nodemailer": "^6.4.17",
+    "axios": "^1.18.1",
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.10.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "handlebars": "^4.7.9",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.9.5",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0",
+    "nodemailer": "^9.0.3",
+    "pdfkit": "^0.19.1",
+    "sslcommerz-lts": "^1.2.0",
+    "stripe": "^22.4.0",
+    "ua-parser-js": "^2.0.10",
+    "zod": "^3.24.1"
+  },
+  "overrides": {
+    "cloudinary": "$cloudinary"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^26.1.1",
+    "@types/pdfkit": "^0.17.6",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.2"
+  }
+}

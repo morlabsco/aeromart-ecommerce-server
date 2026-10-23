@@ -1,0 +1,6 @@
+_id,name,description,logo,isActive,isDeleted,createdBy,createdAt,updatedAt
+2aadfbf587a9e850ff169ba7,Lumière,"Clean, cruelty-free cosmetics that celebrate you.",,true,false,5a5b2bf437407174290fc440,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.255Z
+92ab2123bc77ae47e422ba1b,Maybelline,New York-inspired makeup for every look.,,true,false,5a5b2bf437407174290fc440,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.255Z
+670ac42dd4da4cf257822d54,L'Oréal Paris,Beauty science from the world leader.,,true,false,5a5b2bf437407174290fc440,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.255Z
+12e4ec94e14d8061132a4d5d,The Face Shop,K-beauty skincare and makeup.,,true,false,5a5b2bf437407174290fc440,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.255Z
+6f88093d8bbe105e84754431,Revlon,"Classic, accessible American beauty.",,true,false,5a5b2bf437407174290fc440,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.255Z

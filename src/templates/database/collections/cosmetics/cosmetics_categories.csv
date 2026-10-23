@@ -1,0 +1,6 @@
+_id,name,slug,description,parent,isActive,isDeleted,createdBy,icon,createdAt,updatedAt
+a807312927c4324a073a03e2,Skincare,skincare,Skincare collection.,,true,false,5a5b2bf437407174290fc440,droplet,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.255Z
+e2e25d850a805a7c4f233991,Makeup,makeup,Makeup collection.,,true,false,5a5b2bf437407174290fc440,brush,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.255Z
+ea75518d19eec74bbb8ec954,Fragrance,fragrance,Fragrance collection.,,true,false,5a5b2bf437407174290fc440,sparkles,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.255Z
+c8e4cdabee1aecd51107e3de,Hair Care,hair-care,Hair Care collection.,,true,false,5a5b2bf437407174290fc440,scissors,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.255Z
+673dd5265cac8f9e41735f89,Body Care,body-care,Body Care collection.,,true,false,5a5b2bf437407174290fc440,spa,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.255Z

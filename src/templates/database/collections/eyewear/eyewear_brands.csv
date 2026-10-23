@@ -1,0 +1,6 @@
+_id,name,description,logo,isActive,isDeleted,createdBy,createdAt,updatedAt
+a283821c3f1db2fd5e456780,Attor Optics,Premium eyewear for the discerning eye.,,true,false,eacf1379c72ea3eba8d8fff5,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.233Z
+73199296d74cc51df449bec5,Ray-Ban,Iconic American sunglasses since 1937.,,true,false,eacf1379c72ea3eba8d8fff5,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.233Z
+1cb266f4424d56a91f63c536,Oakley,High-performance sports and lifestyle eyewear.,,true,false,eacf1379c72ea3eba8d8fff5,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.233Z
+64c6d41d760dbe7173db7c7b,Zenni,"Affordable, stylish prescription glasses.",,true,false,eacf1379c72ea3eba8d8fff5,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.233Z
+4ad4fee0d81a02cff83701b8,Goggles & Co,Designer frames for every face.,,true,false,eacf1379c72ea3eba8d8fff5,2026-01-10T10:00:00.000Z,2026-08-15T16:45:41.233Z
