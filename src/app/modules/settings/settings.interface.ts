@@ -84,6 +84,9 @@ export interface IBrandSettings {
     nicheLabel: string;
     logo: string;
     favicon: string;
+    // When true the storefront shows only the logo (natural aspect, uncropped)
+    // instead of logo + name text.
+    logoOnly: boolean;
     // The store's active currency (e.g. "usd", "bdt") — products/orders
     // inherit it, changeable via admin.
     currency: string;

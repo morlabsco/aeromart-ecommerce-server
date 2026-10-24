@@ -187,6 +187,7 @@ const buildPreset = (
         nicheLabel,
         logo: `/demo/${niche}/logo.svg`,
         favicon: "",
+        logoOnly: false,
         currency: defaultCurrency,
         deliveryOptions: defaultDeliveryOptions,
         ...brand,

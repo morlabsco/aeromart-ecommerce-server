@@ -12,6 +12,7 @@
     "build": "tsc",
     "create-module": "npx ts-node src/scripts/createModule.ts",
     "seed:settings": "npx ts-node src/scripts/seedSettings.ts",
+    "seed:nittonova": "npx ts-node src/scripts/seedNittonovaData.ts",
     "deploy": "yarn build && vercel && vercel --prod"
   },
   "dependencies": {

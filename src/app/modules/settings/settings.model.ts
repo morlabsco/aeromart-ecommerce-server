@@ -73,6 +73,7 @@ const brandSchema = new Schema(
         nicheLabel: { type: String, default: "" },
         logo: { type: String, default: "" },
         favicon: { type: String, default: "" },
+        logoOnly: { type: Boolean, default: false },
         currency: {
             type: String,
             enum: Object.values(Currency),

@@ -71,6 +71,7 @@ const brandValidationSchema = z.object({
     nicheLabel: z.string().optional(),
     logo: z.string().optional(),
     favicon: z.string().optional(),
+    logoOnly: z.boolean().optional(),
     currency: z
         .nativeEnum(Currency, {
             errorMap: () => ({ message: "Invalid currency code" }),
