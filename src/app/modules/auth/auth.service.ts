@@ -188,11 +188,18 @@ const forgotPassword = async ({ email }: { email: string }) => {
 
     try {
         const emailContent = await EmailHelper.createEmailContent(
-            { otpCode: otp, userName: user.name },
+            {
+                otpCode: otp,
+                userName: user.name,
+                // Dev resolves to localhost, production to the live storefront
+                // (FRONTEND_URL env) — links and the logo stay correct in both.
+                appUrl: config.frontend_url,
+                logoUrl: `${config.frontend_url}/images/logo.png`,
+            },
             "forgotPassword",
         );
 
-        await EmailHelper.sendEmail(email, emailContent, "Reset Password OTP");
+        await EmailHelper.sendEmail(email, emailContent, "Your AeroMart verification code");
     } catch (error) {
         await User.updateOne({ email }, { $unset: { otpToken: 1 } });
 

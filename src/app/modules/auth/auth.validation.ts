@@ -65,7 +65,7 @@ const verifyOTPZodSchema = z.object({
             .string({
                 required_error: "OTP is required",
             })
-            .regex(/^\d{4}$/, "OTP must be exactly 4 digits"),
+            .regex(/^\d{6}$/, "OTP must be exactly 6 digits"),
     }),
 });
 

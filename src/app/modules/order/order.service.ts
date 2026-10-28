@@ -441,8 +441,9 @@ const trackOrder = async (orderId: string) => {
     };
 };
 
-// Invoice data for the frontend (rendered via react-pdf). Only a PAID order
-// produces an invoice — unpaid/COD-pending orders are rejected with 400.
+// Invoice data for the frontend (rendered via react-pdf). Available for
+// EVERY order — COD orders are payable on delivery, so pending payments
+// still get a receipt (the payment method on the invoice tells the story).
 //
 // Lookup strategy:
 //   - default (no query param): the param is an orderId OR a Mongo _id.
@@ -450,9 +451,15 @@ const trackOrder = async (orderId: string) => {
 //     session id / bKash paymentID) — matched ONLY against transactionId so a
 //     value can never accidentally resolve to a different order's _id.
 const getInvoiceData = async (orderId: string, by?: string) => {
+    // Only test the _id clause when the param is a well-formed ObjectId —
+    // casting a friendly orderId ("DE4KCY5JEA") inside a $or throws a
+    // CastError before the orderId clause can ever match.
+    const isObjectId = mongoose.Types.ObjectId.isValid(orderId);
     const lookup = by === "transactionId"
         ? { transactionId: orderId }
-        : { $or: [{ orderId }, { _id: orderId }] };
+        : isObjectId
+          ? { $or: [{ orderId }, { _id: orderId }] }
+          : { orderId };
 
     const order = await Order.findOne(lookup)
         .populate("user", "name email phoneNo address")
@@ -460,13 +467,6 @@ const getInvoiceData = async (orderId: string, by?: string) => {
 
     if (!order) {
         throw new AppError(StatusCodes.NOT_FOUND, "Order not found!");
-    }
-
-    if (order.paymentStatus !== "Paid") {
-        throw new AppError(
-            StatusCodes.BAD_REQUEST,
-            "Invoice is only available for paid orders!",
-        );
     }
 
     const customer = order.user as any;
@@ -493,6 +493,7 @@ const getInvoiceData = async (orderId: string, by?: string) => {
             method: order.paymentMethod,
             provider: order.paymentProvider || null,
             transactionId: order.transactionId || null,
+            status: order.paymentStatus,
         },
         items: order.products.map((item: any) => ({
             productId: item.product?._id?.toString(),
