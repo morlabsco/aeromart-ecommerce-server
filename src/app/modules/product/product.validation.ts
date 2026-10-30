@@ -28,6 +28,12 @@ const createProductValidationSchema = z.object({
             .min(1, "Slug cannot be empty")
             .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Invalid slug format")
             .optional(),
+        sku: z
+            .string()
+            .trim()
+            .min(1, "SKU cannot be empty")
+            .max(40, "SKU is too long")
+            .optional(),
         description: z.string().min(1, "Description is required"),
         price: z.number().min(0, "Price must be a positive number"),
         // currency is NOT accepted on create — it inherits from the store's
@@ -84,6 +90,12 @@ const updateProductValidationSchema = z.object({
             .string()
             .min(1, "Slug cannot be empty")
             .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Invalid slug format")
+            .optional(),
+        sku: z
+            .string()
+            .trim()
+            .min(1, "SKU cannot be empty")
+            .max(40, "SKU is too long")
             .optional(),
         description: z.string().min(1, "Description is required").optional(),
         price: z.number().min(0, "Price must be a positive number").optional(),

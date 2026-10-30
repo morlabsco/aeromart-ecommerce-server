@@ -15,6 +15,7 @@ import {
     buildVariantSku,
     populateProductRefs,
     resolveProductSlug,
+    resolveProductSku,
     mergeVariantImageFiles,
     validateVariantAttributes,
     reconcileVariantColors,
@@ -23,9 +24,18 @@ import {
 } from "./product.utils";
 
 const getAllProducts = async (query: Record<string, unknown>) => {
+    // Params handled manually below must not leak into the generic filter —
+    // Mongoose does not strip unknown fields from filters on this setup, so
+    // a literal `minPrice: "100"` condition would match nothing (minPrice /
+    // maxPrice silently returned 0 results before this fix).
+    const queryObj = { ...query };
+    ["minPrice", "maxPrice", "onOffer", "hasOffer"].forEach((param) =>
+        delete queryObj[param],
+    );
+
     const productQuery = new QueryBuilder(
         Product.find({ isDeleted: false }),
-        query,
+        queryObj,
     )
         .search(ProductSearchableFields)
         .filter()
@@ -38,6 +48,37 @@ const getAllProducts = async (query: Record<string, unknown>) => {
         const minPrice = Number(query.minPrice) || 0;
         const maxPrice = Number(query.maxPrice) || Number.MAX_SAFE_INTEGER;
         productQuery.priceRange(minPrice, maxPrice);
+    }
+
+    // Offer filters — mirrors the storefront's getOfferPrice semantics:
+    // a null/missing date boundary means "always open", and a live offer is
+    // active, positive and inside its window.
+    if (query.onOffer === "true") {
+        const now = new Date();
+        productQuery.modelQuery = productQuery.modelQuery.find({
+            "offerPrice.isActive": true,
+            "offerPrice.value": { $gt: 0 },
+            $and: [
+                {
+                    $or: [
+                        { "offerPrice.startAt": null },
+                        { "offerPrice.startAt": { $lte: now } },
+                    ],
+                },
+                {
+                    $or: [
+                        { "offerPrice.endAt": null },
+                        { "offerPrice.endAt": { $gte: now } },
+                    ],
+                },
+            ],
+        } as any);
+    } else if (query.hasOffer === "true") {
+        // Any product carrying an offerPrice at all (live, scheduled or
+        // expired) — powers the admin's Offered Products manager.
+        productQuery.modelQuery = productQuery.modelQuery.find({
+            offerPrice: { $exists: true, $ne: null },
+        } as any);
     }
 
     const result = await populateProductRefs(
@@ -84,6 +125,10 @@ const createProduct = async (
 
     // Resolve slug (provided or auto-generated unique)
     payload.slug = await resolveProductSlug(payload.name, payload.slug);
+
+    // Product-level SKU — provided (uniqueness-checked, uppercased) or
+    // auto-generated {NAME_PREFIX}-{RANDOM}.
+    payload.sku = await resolveProductSku(payload.sku, payload.name);
 
     // Currency is inherited from the store's brand settings — no manual currency.
     payload.currency = (await getStoreCurrency()) as IProduct["currency"];
@@ -215,6 +260,27 @@ const updateProduct = async (
             payload.slug,
             productId,
         );
+    }
+
+    // SKU: an explicit value is uniqueness-checked and set; when absent the
+    // existing SKU stays (renames never regenerate it — stock codes are
+    // stable identifiers). Legacy products created before the field existed
+    // get healed with a generated SKU on their next update.
+    if (typeof payload.sku === "string" && payload.sku.trim() !== "") {
+        payload.sku = await resolveProductSku(
+            payload.sku,
+            (payload.name || existingProduct.name) as string,
+            productId,
+        );
+    } else {
+        delete payload.sku;
+        if (!existingProduct.sku) {
+            payload.sku = await resolveProductSku(
+                undefined,
+                (payload.name || existingProduct.name) as string,
+                productId,
+            );
+        }
     }
 
     // Normalize offer price dates

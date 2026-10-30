@@ -9,6 +9,7 @@ export const SETTINGS_SECTIONS = [
     "contact",
     "about",
     "limitedOffer",
+    "seo",
 ] as const;
 
 export type SettingsSection = (typeof SETTINGS_SECTIONS)[number];

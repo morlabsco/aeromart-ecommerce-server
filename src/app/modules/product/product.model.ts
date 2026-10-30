@@ -81,6 +81,17 @@ const productSchema = new Schema<IProduct, ProductModel>(
             unique: true,
             lowercase: true,
         },
+        // Product-level stock code (the "parent" SKU — variants carry their
+        // own). Auto-generated on create when not provided; unique and
+        // sparse so legacy docs without it don't collide on the index.
+        sku: {
+            type: String,
+            required: false,
+            unique: true,
+            sparse: true,
+            uppercase: true,
+            trim: true,
+        },
         description: {
             type: String,
             required: true,

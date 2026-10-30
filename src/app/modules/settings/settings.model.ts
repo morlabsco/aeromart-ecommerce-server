@@ -267,6 +267,18 @@ const limitedOfferSchema = new Schema(
     { _id: false },
 );
 
+const seoSchema = new Schema(
+    {
+        title: { type: String, default: "" },
+        titleTemplate: { type: String, default: "" },
+        description: { type: String, default: "" },
+        keywords: { type: String, default: "" },
+        ogImage: { type: String, default: "" },
+        noindex: { type: Boolean, default: false },
+    },
+    { _id: false },
+);
+
 const settingsSchema = new Schema<ISettings, SettingsModel>(
     {
         _id: {
@@ -282,6 +294,7 @@ const settingsSchema = new Schema<ISettings, SettingsModel>(
         contact: { type: contactSchema, default: () => ({}) },
         about: { type: aboutSchema, default: () => ({}) },
         limitedOffer: { type: limitedOfferSchema, default: () => ({}) },
+        seo: { type: seoSchema, default: () => ({}) },
     },
     {
         timestamps: true,

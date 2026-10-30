@@ -212,6 +212,27 @@ export interface ILimitedOfferSection {
 }
 
 // ------------------------------------------------------------
+// SEO
+// ------------------------------------------------------------
+// Store-wide search/social metadata. Every field falls back gracefully:
+// empty title → brand name; empty ogImage → first hero slide → brand logo.
+export interface ISeoSection {
+    // Home page <title> (falls back to the brand name — never "Brand - X").
+    title: string;
+    // How sub-page titles compose, Next.js pattern with %s, e.g. "%s | Attor".
+    titleTemplate: string;
+    // Meta description (search snippet copy).
+    description: string;
+    // Comma-separated meta keywords.
+    keywords: string;
+    // Social share image (Open Graph / Twitter), recommended 1200x630.
+    // Empty = auto (first hero slide image, else the brand logo).
+    ogImage: string;
+    // When true the storefront sends noindex, nofollow robots meta.
+    noindex: boolean;
+}
+
+// ------------------------------------------------------------
 // Settings singleton
 // ------------------------------------------------------------
 export interface ISettings extends Document {
@@ -224,6 +245,7 @@ export interface ISettings extends Document {
     contact: IContactSection;
     about: IAboutSection;
     limitedOffer: ILimitedOfferSection;
+    seo: ISeoSection;
     createdAt: Date;
     updatedAt: Date;
 }

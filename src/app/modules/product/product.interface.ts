@@ -51,6 +51,9 @@ export interface IColorOption {
 export interface IProduct extends Document {
     name: string;
     slug: string;
+    // Product-level stock code (parent SKU; variants carry their own).
+    // Optional until the backfill ran — every create path sets one.
+    sku?: string;
     description: string;
     price: number;
     currency: Currency;

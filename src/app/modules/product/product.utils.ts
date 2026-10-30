@@ -30,6 +30,47 @@ export const buildVariantSku = (
     return [productPrefix, ...parts, random].join("-");
 };
 
+/* ------------------------------------------------------------------
+ * Product-level SKU (the parent stock code — variants carry their own).
+ * Auto-generated as {NAME_PREFIX}-{RANDOM} (e.g. SMAR-7F3K9Q) when the
+ * admin leaves it blank; an explicitly provided SKU is uppercased and
+ * must not belong to another product (409 on clash, like the slug).
+ * ------------------------------------------------------------------ */
+const SKU_GENERATE_ATTEMPTS = 5;
+
+export const resolveProductSku = async (
+    desired: string | undefined,
+    name: string,
+    excludeId?: string,
+): Promise<string> => {
+    const candidate = desired?.trim().toUpperCase();
+
+    if (candidate) {
+        const owner = await Product.findOne({ sku: candidate }).select("_id");
+        if (owner && String(owner._id) !== excludeId) {
+            throw new AppError(
+                StatusCodes.CONFLICT,
+                "A product with this SKU already exists!",
+            );
+        }
+        return candidate;
+    }
+
+    const prefix =
+        name.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 4) || "PRD";
+    for (let i = 0; i < SKU_GENERATE_ATTEMPTS; i++) {
+        const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+        const sku = `${prefix}-${random}`;
+        const owner = await Product.findOne({ sku }).select("_id");
+        if (!owner || String(owner._id) === excludeId) return sku;
+    }
+    // Practically unreachable (36^6 space) — still fail loudly, never dup.
+    throw new AppError(
+        StatusCodes.CONFLICT,
+        "Could not generate a unique SKU — please provide one.",
+    );
+};
+
 // Merge uploaded variant image files into each variant's imageUrls slots.
 // The client sends `variantImages` files (flat, in variant order) plus, in
 // `data`, each variant's `imageUrls` array declaring its image slots:

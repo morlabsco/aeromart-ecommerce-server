@@ -14,8 +14,8 @@ app.use(
     cors({
         origin: [
             "http://localhost:3000",
-            "https://dazzle.morlabs.co",
-            "https://as-sulafah.morlabs.co",
+            "https://aeromartbd.com",
+            "https://www.aeromartbd.com",
         ],
     }),
 );

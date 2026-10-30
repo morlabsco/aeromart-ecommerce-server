@@ -27,6 +27,8 @@ export const mapSectionFiles = <T extends Record<string, unknown>>(
         (body as any).image = files[0]?.path ?? (body as any).image;
     } else if (section === "limitedOffer") {
         (body as any).image = files[0]?.path ?? (body as any).image;
+    } else if (section === "seo") {
+        (body as any).ogImage = files[0]?.path ?? (body as any).ogImage;
     }
 
     return body;

@@ -33,6 +33,20 @@ const getSettings = async (): Promise<ISettings> => {
     }
 
     const data = settings.toObject();
+
+    // Older singletons predate the seo section (schema defaults only apply
+    // to new documents) — normalize it so every read carries the full shape.
+    if (!(data as any).seo) {
+        (data as any).seo = {
+            title: "",
+            titleTemplate: "",
+            description: "",
+            keywords: "",
+            ogImage: "",
+            noindex: false,
+        };
+    }
+
     settingsCache.set(data as ISettings);
 
     return data as ISettings;
@@ -57,6 +71,8 @@ const sectionImageUrls = (
         (body.items || []).forEach((i: any) => push(i?.avatar));
     } else if (section === "about" || section === "limitedOffer") {
         push(body.image);
+    } else if (section === "seo") {
+        push(body.ogImage);
     }
     return urls;
 };

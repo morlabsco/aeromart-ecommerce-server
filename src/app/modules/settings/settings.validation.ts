@@ -204,6 +204,18 @@ const limitedOfferValidationSchema = z.object({
     endsAt: z.string().optional(),
 });
 
+const seoValidationSchema = z.object({
+    title: z.string().max(120, "Title is too long").optional(),
+    titleTemplate: z
+        .string()
+        .max(120, "Title template is too long")
+        .optional(),
+    description: z.string().max(500, "Description is too long").optional(),
+    keywords: z.string().max(500, "Keywords are too long").optional(),
+    ogImage: z.string().optional(),
+    noindex: z.boolean().optional(),
+});
+
 export const sectionBodySchemas: Record<SettingsSection, z.ZodTypeAny> = {
     theme: themeValidationSchema,
     hero: heroValidationSchema,
@@ -213,6 +225,7 @@ export const sectionBodySchemas: Record<SettingsSection, z.ZodTypeAny> = {
     contact: contactValidationSchema,
     about: aboutValidationSchema,
     limitedOffer: limitedOfferValidationSchema,
+    seo: seoValidationSchema,
 };
 
 export const updateBrandFieldsValidationSchema = z.object({

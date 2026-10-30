@@ -11,6 +11,7 @@ import { ReviewRoutes } from "../modules/review/review.routes";
 import { PaymentRoutes } from "../modules/payment/payment.routes";
 import { SettingsRoutes } from "../modules/settings/settings.routes";
 import { ActivityRoutes } from "../modules/activity/activity.routes";
+import { NewsletterRoutes } from "../modules/newsletter/newsletter.routes";
 
 const router = Router();
 
@@ -58,6 +59,10 @@ const moduleRoutes = [
     {
         path: "/settings",
         route: SettingsRoutes,
+    },
+    {
+        path: "/newsletter",
+        route: NewsletterRoutes,
     },
     {
         path: "/activity",
