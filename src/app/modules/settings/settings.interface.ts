@@ -233,6 +233,17 @@ export interface ISeoSection {
 }
 
 // ------------------------------------------------------------
+// Policy
+// ------------------------------------------------------------
+// Editable storefront policy pages. `returnRefund` holds rich HTML produced
+// by the dashboard editor; an EMPTY string means "render the built-in
+// default page" (the typed builder in the app), so the shipped design is
+// never lost — it is only overridden while the admin has custom content.
+export interface IPolicySection {
+    returnRefund: string;
+}
+
+// ------------------------------------------------------------
 // Settings singleton
 // ------------------------------------------------------------
 export interface ISettings extends Document {
@@ -246,6 +257,7 @@ export interface ISettings extends Document {
     about: IAboutSection;
     limitedOffer: ILimitedOfferSection;
     seo: ISeoSection;
+    policy: IPolicySection;
     createdAt: Date;
     updatedAt: Date;
 }

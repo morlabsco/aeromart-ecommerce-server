@@ -279,6 +279,13 @@ const seoSchema = new Schema(
     { _id: false },
 );
 
+const policySchema = new Schema(
+    {
+        returnRefund: { type: String, default: "" },
+    },
+    { _id: false },
+);
+
 const settingsSchema = new Schema<ISettings, SettingsModel>(
     {
         _id: {
@@ -295,6 +302,7 @@ const settingsSchema = new Schema<ISettings, SettingsModel>(
         about: { type: aboutSchema, default: () => ({}) },
         limitedOffer: { type: limitedOfferSchema, default: () => ({}) },
         seo: { type: seoSchema, default: () => ({}) },
+        policy: { type: policySchema, default: () => ({}) },
     },
     {
         timestamps: true,

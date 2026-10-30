@@ -36,6 +36,10 @@ export interface IOrderProduct {
     product: Types.ObjectId;
     quantity: number;
     unitPrice: number;
+    // Pre-offer unit price snapshot (what the item cost before its active
+    // offerPrice was applied). Absent on orders placed before this field
+    // existed — fall back to unitPrice there.
+    baseUnitPrice?: number;
     // The chosen variant when the product has variants (else undefined).
     variant?: IOrderProductVariant;
 }

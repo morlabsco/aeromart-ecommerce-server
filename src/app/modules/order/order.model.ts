@@ -36,6 +36,13 @@ const orderProductSchema = new Schema(
             required: true,
             min: 0,
         },
+        // Pre-offer price snapshot — the struck-through "original" price on
+        // receipts. Optional: legacy orders predate it (fall back to unitPrice).
+        baseUnitPrice: {
+            type: Number,
+            min: 0,
+            default: undefined,
+        },
         // Snapshot of the chosen variant (SKU + attributes) when the product
         // has variants. Priced/stocked from the variant, not the base product.
         variant: {

@@ -5,8 +5,15 @@ import AppError from "../../errors/appError";
 import { StatusCodes } from "http-status-codes";
 import { ActivitySearchableFields } from "./activity.constant";
 
+// Populated performer summary embedded on every activity read — the audit
+// UI shows WHO did it (name, email, role) without a second round-trip.
+const PERFORMER_FIELDS = "name email role photoUrl";
+
 const getAllActivities = async (query: Record<string, unknown>) => {
-    const activityQuery = new QueryBuilder(Activity.find(), query)
+    const activityQuery = new QueryBuilder(
+        Activity.find().populate("performedBy", PERFORMER_FIELDS),
+        query,
+    )
         .search(ActivitySearchableFields)
         .filter()
         .sort()
@@ -20,7 +27,10 @@ const getAllActivities = async (query: Record<string, unknown>) => {
 };
 
 const getSingleActivity = async (activityId: string) => {
-    const activity = await Activity.findById(activityId);
+    const activity = await Activity.findById(activityId).populate(
+        "performedBy",
+        PERFORMER_FIELDS,
+    );
 
     if (!activity) {
         throw new AppError(StatusCodes.NOT_FOUND, "Activity not found!");

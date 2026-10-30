@@ -3,7 +3,8 @@ import Order from "../modules/order/order.model";
 
 /**
  * Generates a human-friendly, UNGUESSABLE order id in the format:
- *   DEXXXXXXXX  (DE + 8 random chars, e.g. "DEY2H7ULPD" → 10 chars total)
+ *   AMXXXXXXXX  (AM + 8 random chars, e.g. "AMY2H7ULPD" → 10 chars total)
+ *   "AM" = AeroMart. (The original "DE" prefix predates the rebrand.)
  *
  * The 8-char suffix is cryptographically random (alphanumeric, uppercase),
  * with NO date or sequence encoded — a predictable incrementing sequence would
@@ -21,7 +22,7 @@ export const generateOrderId = async (): Promise<string> => {
             suffix += alphabet[bytes[i] % alphabet.length];
         }
 
-        const candidate = `DE${suffix}`;
+        const candidate = `AM${suffix}`;
         const exists = await Order.findOne({ orderId: candidate }).select("_id");
         if (!exists) {
             return candidate;
@@ -34,5 +35,5 @@ export const generateOrderId = async (): Promise<string> => {
         .toString("base64")
         .replace(/[^A-Z0-9]/g, "")
         .slice(0, 8);
-    return `DE${fallback}`;
+    return `AM${fallback}`;
 };

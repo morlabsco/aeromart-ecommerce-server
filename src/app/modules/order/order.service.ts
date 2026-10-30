@@ -19,7 +19,7 @@ import {
 const getAllOrders = async (query: Record<string, unknown>) => {
     const orderQuery = new QueryBuilder(
         Order.find()
-            .populate("user", "name email")
+            .populate("user", "name email photoUrl")
             .populate("products.product", "name price imageUrls"),
         query,
     )
@@ -44,7 +44,7 @@ const getMyOrders = async (
 ) => {
     const orderQuery = new QueryBuilder(
         Order.find({ user: authUser.userId })
-            .populate("user", "name email")
+            .populate("user", "name email photoUrl")
             .populate("products.product", "name price imageUrls"),
         query,
     )
@@ -67,7 +67,7 @@ const getOrderDetails = async (
     authUser: IJwtPayload | undefined,
 ) => {
     const order = await Order.findById(orderId)
-        .populate("user", "name email")
+        .populate("user", "name email photoUrl")
         .populate("products.product", "name price imageUrls");
 
     if (!order) {
@@ -119,10 +119,13 @@ const createOrder = async (
         }
         const deliveryCharge = await resolveDeliveryCharge(deliveryOptionName);
 
-        // Total discount = offer savings + coupon savings. The order stores the
-        // two parts separately so both are shown when both exist.
+        // Total discount = offer savings + coupon savings (display field).
+        // NOTE: `totalAmount` is ALREADY the post-offer subtotal (unit prices
+        // reflect active offers), so the FINAL amount subtracts the COUPON
+        // only — subtracting totalDiscount here would double-count the offer
+        // and over-discount every order with an active product offer.
         const totalDiscount = offerDiscount + discount;
-        const finalAmount = totalAmount - totalDiscount + deliveryCharge;
+        const finalAmount = totalAmount - discount + deliveryCharge;
 
         // 4. Build the order with server-computed values.
         //    Guest checkout (no token) → user is null. The orderId is a random
@@ -172,7 +175,7 @@ const createOrder = async (
         await session.commitTransaction();
 
         const populatedOrder = await Order.findById(createdOrder._id)
-            .populate("user", "name email")
+            .populate("user", "name email photoUrl")
             .populate("products.product", "name price imageUrls");
 
         // Fire-and-forget activity log (not part of the transaction).
@@ -277,8 +280,11 @@ const updateOrder = async (
         }
 
         order.totalDiscount = order.offerDiscount + order.discount;
+        // totalAmount is the post-offer subtotal — subtract the coupon only
+        // (see the matching note in createOrder; totalDiscount here would
+        // double-count the offer).
         order.finalAmount =
-            order.totalAmount - order.totalDiscount + order.deliveryCharge;
+            order.totalAmount - order.discount + order.deliveryCharge;
 
         if (payload.shippingAddress) {
             order.shippingAddress = payload.shippingAddress;
@@ -318,7 +324,7 @@ const updateOrder = async (
         await session.commitTransaction();
 
         const populatedOrder = await Order.findById(order._id)
-            .populate("user", "name email")
+            .populate("user", "name email photoUrl")
             .populate("products.product", "name price imageUrls");
 
         await ActivityServices.logActivity({
@@ -364,7 +370,7 @@ const changeOrderStatus = async (
         { status },
         { new: true },
     )
-        .populate("user", "name email")
+        .populate("user", "name email photoUrl")
         .populate("products.product", "name price imageUrls");
 
     await ActivityServices.logActivity({
@@ -388,7 +394,7 @@ const changeOrderStatus = async (
 // their order id on the tracking page, so it must be the stable public key.
 const trackOrder = async (orderId: string) => {
     const order = await Order.findOne({ orderId })
-        .populate("user", "name email")
+        .populate("user", "name email photoUrl")
         .populate("products.product", "name price imageUrls");
 
     if (!order) {
@@ -401,13 +407,19 @@ const trackOrder = async (orderId: string) => {
         image: item.product?.imageUrls?.[0]?.url || "",
         quantity: item.quantity,
         unitPrice: item.unitPrice,
+        // Pre-offer price (legacy orders fall back to the charged price).
+        baseUnitPrice: item.baseUnitPrice ?? item.unitPrice,
         total: item.unitPrice * item.quantity,
         ...(item.variant
             ? { variant: { sku: item.variant.sku, attributes: item.variant.attributes || {} } }
             : {}),
     }));
 
-    const subtotal = order.totalAmount;
+    // Subtotal BEFORE offer discounts (Σ base × qty). Receipts must show:
+    //   subtotal (base) − offerDiscount − coupon + delivery = finalAmount.
+    // `totalAmount` alone is the POST-offer subtotal — displaying it next to
+    // the offer line double-subtracts.
+    const subtotal = order.totalAmount + (order.offerDiscount || 0);
     const statusHistory = [
         { status: "Pending", at: order.createdAt },
         ...(order.status !== "Pending"
@@ -423,7 +435,9 @@ const trackOrder = async (orderId: string) => {
         paymentMethod: order.paymentMethod,
         paymentProvider: order.paymentProvider || null,
         currency: order.currency,
+        coupon: order.coupon || null,
         totalAmount: subtotal,
+        postOfferSubtotal: order.totalAmount,
         offerDiscount: order.offerDiscount,
         discount: order.discount,
         totalDiscount: order.totalDiscount,
@@ -501,13 +515,17 @@ const getInvoiceData = async (orderId: string, by?: string) => {
             image: item.product?.imageUrls?.[0]?.url || "",
             quantity: item.quantity,
             unitPrice: item.unitPrice,
+            // Pre-offer price (legacy orders fall back to the charged price).
+            baseUnitPrice: item.baseUnitPrice ?? item.unitPrice,
             total: item.unitPrice * item.quantity,
             ...(item.variant
                 ? { variant: { sku: item.variant.sku, attributes: item.variant.attributes || {} } }
                 : {}),
         })),
+        coupon: order.coupon || null,
         totals: {
-            subtotal: order.totalAmount,
+            // Subtotal BEFORE offer discounts — see trackOrder's note.
+            subtotal: order.totalAmount + (order.offerDiscount || 0),
             offerDiscount: order.offerDiscount,
             discount: order.discount,
             totalDiscount: order.totalDiscount,

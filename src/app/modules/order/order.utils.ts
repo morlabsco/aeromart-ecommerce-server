@@ -48,6 +48,9 @@ export const validateAndPriceProducts = async (
     const priced: {
         product: mongoose.Types.ObjectId;
         quantity: number;
+        /** Pre-offer price snapshot — powers the struck-through original on
+         *  every receipt (unitPrice alone is already offer-adjusted). */
+        baseUnitPrice: number;
         unitPrice: number;
         variant?: { sku: string; attributes: Record<string, string> };
     }[] = [];
@@ -126,14 +129,11 @@ export const validateAndPriceProducts = async (
             );
         }
 
-        // All products in an order must share the same currency
-        if (currency && product.currency !== currency) {
-            throw new AppError(
-                StatusCodes.BAD_REQUEST,
-                "All products in an order must have the same currency!",
-            );
-        }
-        currency = product.currency;
+        // The ORDER's currency is the store's LIVE brand currency — the same
+        // source products inherit from at creation. Per-product stamps can be
+        // stale legacy data (pre-rebrand "usd"), and comparing them here used
+        // to block perfectly valid mixed-catalog orders.
+        currency = currency; // resolved below from brand settings
 
         // Effective unit price — apply the offer when it is currently active.
         let unitPrice = basePrice;
@@ -160,6 +160,7 @@ export const validateAndPriceProducts = async (
         priced.push({
             product: product._id,
             quantity: item.quantity,
+            baseUnitPrice: basePrice,
             unitPrice,
             ...(variantSnapshot ? { variant: variantSnapshot } : {}),
         });
@@ -167,7 +168,11 @@ export const validateAndPriceProducts = async (
         total += unitPrice * item.quantity;
     }
 
-    return { priced, totalAmount: total, offerDiscount, currency: currency || Currency.USD };
+    // Brand settings are the currency source of truth (matches product create).
+    const settings = await Settings.findById(SETTINGS_ID).select("brand");
+    const brandCurrency = (settings?.brand?.currency as Currency) || Currency.USD;
+
+    return { priced, totalAmount: total, offerDiscount, currency: brandCurrency };
 };
 
 // Verify a coupon code and return the computed discount (0 if no coupon)

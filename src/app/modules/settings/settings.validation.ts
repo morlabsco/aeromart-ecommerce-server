@@ -216,6 +216,13 @@ const seoValidationSchema = z.object({
     noindex: z.boolean().optional(),
 });
 
+const policyValidationSchema = z.object({
+    // Rich HTML from the dashboard editor. Length-capped as a safety net;
+    // the editor itself is the primary sanitizer (TipTap's document model
+    // drops scripts/handlers on paste).
+    returnRefund: z.string().max(200_000, "Policy content is too long").optional(),
+});
+
 export const sectionBodySchemas: Record<SettingsSection, z.ZodTypeAny> = {
     theme: themeValidationSchema,
     hero: heroValidationSchema,
@@ -226,6 +233,7 @@ export const sectionBodySchemas: Record<SettingsSection, z.ZodTypeAny> = {
     about: aboutValidationSchema,
     limitedOffer: limitedOfferValidationSchema,
     seo: seoValidationSchema,
+    policy: policyValidationSchema,
 };
 
 export const updateBrandFieldsValidationSchema = z.object({
