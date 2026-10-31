@@ -216,10 +216,26 @@ const seoValidationSchema = z.object({
     noindex: z.boolean().optional(),
 });
 
+const policyItemSchema = z.object({
+    lead: z.string().max(200, "Item lead is too long").optional(),
+    text: z.string().min(1, "Item text is required").max(2000, "Item text is too long"),
+});
+
+const policySectionSchema = z.object({
+    title: z.string().min(1, "Section title is required").max(200, "Section title is too long"),
+    intro: z.string().max(2000).optional(),
+    paragraphs: z.array(z.string().max(4000)).max(30).optional(),
+    items: z.array(policyItemSchema).max(40).optional(),
+    checklist: z.array(z.string().max(2000)).max(30).optional(),
+    callout: z.string().max(2000).optional(),
+    note: z.string().max(2000).optional(),
+});
+
 const policyValidationSchema = z.object({
-    // Rich HTML from the dashboard editor. Length-capped as a safety net;
-    // the editor itself is the primary sanitizer (TipTap's document model
-    // drops scripts/handlers on paste).
+    // Structured sections (the dashboard editor's model). Plain data — no
+    // HTML — so the storefront renders them in the numbered-card design.
+    sections: z.array(policySectionSchema).max(50, "Too many policy sections").optional(),
+    // Legacy single rich-HTML override (kept writable for compatibility).
     returnRefund: z.string().max(200_000, "Policy content is too long").optional(),
 });
 

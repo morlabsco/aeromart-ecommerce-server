@@ -14,6 +14,13 @@ router.get('/', auth(UserRole.ADMIN), UserController.getAllUser);
 
 router.get('/me', auth(UserRole.ADMIN, UserRole.MANAGER, UserRole.CUSTOMER), UserController.myProfile);
 
+// Admin-only single fetch (registered after /me so the literal path wins).
+router.get(
+    "/:id",
+    auth(UserRole.ADMIN),
+    UserController.getUserById,
+);
+
 router.post(
     "/register",
     clientInfoParser,
@@ -43,6 +50,14 @@ router.patch(
    '/:id/status',
    auth(UserRole.ADMIN),
    UserController.updateUserStatus
+);
+
+// Admin-only: switch customer <-> manager (admin role is DB-managed only).
+router.patch(
+    "/:id/role",
+    auth(UserRole.ADMIN),
+    validateRequest(UserValidation.updateUserRoleSchema),
+    UserController.updateUserRole,
 );
 
 export const UserRoutes = router;

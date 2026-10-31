@@ -183,6 +183,65 @@ const updateUserStatus = async (
     return updatedUser;
 };
 
+// Admin-only single fetch by id — deliberately INCLUDES the requesting
+// admin (the list endpoint excludes yourself, so viewing your own profile
+// through the list always 404s).
+const getUserById = async (userId: string) => {
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new AppError(StatusCodes.NOT_FOUND, "User is not found");
+    }
+    return user;
+};
+
+// Admin-only: switch a user between customer and manager. Admin accounts
+// are deliberately untouchable here , granting admin stays a direct
+// database operation (a future super-admin may own it when the app scales).
+const updateUserRole = async (
+    userId: string,
+    role: UserRole.CUSTOMER | UserRole.MANAGER,
+    authUser: IJwtPayload,
+) => {
+    if (String(userId) === authUser.userId) {
+        throw new AppError(
+            StatusCodes.BAD_REQUEST,
+            "You cannot change your own role!",
+        );
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new AppError(StatusCodes.NOT_FOUND, "User is not found");
+    }
+    if (user.role === UserRole.ADMIN) {
+        throw new AppError(
+            StatusCodes.BAD_REQUEST,
+            "Admin accounts are managed directly in the database , their role cannot be changed here!",
+        );
+    }
+    if (user.role === role) {
+        throw new AppError(
+            StatusCodes.BAD_REQUEST,
+            `User is already a ${role}!`,
+        );
+    }
+
+    const previousRole = user.role;
+    user.role = role;
+    const updatedUser = await user.save();
+
+    await ActivityServices.logActivity({
+        module: ActivityModule.USER,
+        type: ActivityType.STATUS,
+        message: `User "${user.name}" role changed from ${previousRole} to ${updatedUser.role}`,
+        referenceId: user._id.toString(),
+        performedBy: authUser.userId,
+        metadata: { previousRole, role: updatedUser.role },
+    });
+
+    return updatedUser;
+};
+
 // Admin-only: create a dashboard user (manager/customer/admin) from the
 // panel — the ONLY path that can mint a non-customer role.
 const createUserByAdmin = async (
@@ -224,6 +283,8 @@ const createUserByAdmin = async (
 
 export const UserServices = {
     registerUser,
+    getUserById,
+    updateUserRole,
     createUserByAdmin,
     getAllUser,
     myProfile,

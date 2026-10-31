@@ -85,6 +85,34 @@ const updateUserStatus = catchAsync(async (req, res) => {
     });
 });
 
+// Admin-only: single user by id (includes yourself).
+const getUserById = catchAsync(async (req, res) => {
+    const result = await UserServices.getUserById(req.params.id as string);
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "User retrieved successfully",
+        data: result,
+    });
+});
+
+// Admin-only: switch a user between customer and manager.
+const updateUserRole = catchAsync(async (req, res) => {
+    const userId = req.params.id;
+    const result = await UserServices.updateUserRole(
+        userId as string,
+        req.body.role,
+        req.user as IJwtPayload,
+    );
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: `User is now a ${result.role}`,
+        data: result,
+    });
+});
+
 // Admin-only: create a dashboard user (manager etc.) from the panel.
 const createUserByAdmin = catchAsync(async (req, res) => {
     const result = await UserServices.createUserByAdmin(
@@ -102,6 +130,8 @@ const createUserByAdmin = catchAsync(async (req, res) => {
 
 export const UserController = {
     registerUser,
+    getUserById,
+    updateUserRole,
     createUserByAdmin,
     getAllUser,
     myProfile,

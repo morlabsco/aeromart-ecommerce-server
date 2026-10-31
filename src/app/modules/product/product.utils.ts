@@ -50,7 +50,7 @@ export const resolveProductSku = async (
         if (owner && String(owner._id) !== excludeId) {
             throw new AppError(
                 StatusCodes.CONFLICT,
-                "A product with this SKU already exists!",
+                "This SKU is already used by another product (every product and variant SKU must be unique). HOW TO FIX: change the SKU field to a different code, or clear it to let the system generate one.",
             );
         }
         return candidate;

@@ -7,12 +7,13 @@ import { ActivityValidation } from "./activity.validation";
 
 const router = Router();
 
-// Activities are an admin-only audit log.
-router.get("/", auth(UserRole.ADMIN, UserRole.MANAGER), ActivityController.getAllActivities);
+// Activities are an admin-only audit log (they monitor managers' work too —
+// managers themselves get no access).
+router.get("/", auth(UserRole.ADMIN), ActivityController.getAllActivities);
 
 router.get(
     "/:activityId",
-    auth(UserRole.ADMIN, UserRole.MANAGER),
+    auth(UserRole.ADMIN),
     ActivityController.getSingleActivity,
 );
 

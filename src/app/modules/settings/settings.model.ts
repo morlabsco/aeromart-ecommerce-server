@@ -279,9 +279,31 @@ const seoSchema = new Schema(
     { _id: false },
 );
 
+const policyItemSchema = new Schema(
+    {
+        lead: { type: String, default: "", trim: true },
+        text: { type: String, required: true, trim: true },
+    },
+    { _id: false },
+);
+
+const policySectionDataSchema = new Schema(
+    {
+        title: { type: String, required: true, trim: true },
+        intro: { type: String, default: "", trim: true },
+        paragraphs: { type: [String], default: [] },
+        items: { type: [policyItemSchema], default: [] },
+        checklist: { type: [String], default: [] },
+        callout: { type: String, default: "", trim: true },
+        note: { type: String, default: "", trim: true },
+    },
+    { _id: false },
+);
+
 const policySchema = new Schema(
     {
         returnRefund: { type: String, default: "" },
+        sections: { type: [policySectionDataSchema], default: [] },
     },
     { _id: false },
 );

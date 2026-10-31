@@ -235,12 +235,31 @@ export interface ISeoSection {
 // ------------------------------------------------------------
 // Policy
 // ------------------------------------------------------------
-// Editable storefront policy pages. `returnRefund` holds rich HTML produced
-// by the dashboard editor; an EMPTY string means "render the built-in
-// default page" (the typed builder in the app), so the shipped design is
-// never lost — it is only overridden while the admin has custom content.
+// Editable storefront policy pages — STRUCTURED SECTIONS (31/10/2026):
+// the dashboard manages a LIST of sections (each with paragraphs, bullet
+// items, checklist, callout and note) that renders in the storefront's
+// numbered-card design. An EMPTY list means "render the built-in default
+// sections" (the app's typed data), so the shipped design is never lost.
+// `returnRefund` is the legacy single rich-HTML override — kept readable
+// for old documents, no longer written by the dashboard.
+export interface IPolicyItem {
+    lead?: string;
+    text: string;
+}
+
+export interface IPolicySectionData {
+    title: string;
+    intro?: string;
+    paragraphs?: string[];
+    items?: IPolicyItem[];
+    checklist?: string[];
+    callout?: string;
+    note?: string;
+}
+
 export interface IPolicySection {
     returnRefund: string;
+    sections?: IPolicySectionData[];
 }
 
 // ------------------------------------------------------------

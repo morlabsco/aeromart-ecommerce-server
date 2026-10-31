@@ -50,7 +50,9 @@ const getSettings = async (): Promise<ISettings> => {
 
     // Same for the policy section — old singletons predate it.
     if (!(data as any).policy) {
-        (data as any).policy = { returnRefund: "" };
+        (data as any).policy = { returnRefund: "", sections: [] };
+    } else if ((data as any).policy && !Array.isArray((data as any).policy.sections)) {
+        (data as any).policy.sections = [];
     }
 
     settingsCache.set(data as ISettings);

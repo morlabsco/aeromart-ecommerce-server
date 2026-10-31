@@ -77,7 +77,21 @@ const userProfileUpdateSchema = z.object({
         .strict(),
 });
 
+// Admin-only role change , customer <-> manager only. The admin role is
+// granted by direct database edit on purpose (a future super-admin may own
+// it when the app scales).
+const updateUserRoleSchema = z.object({
+    body: z.object({
+        role: z.enum([UserRole.CUSTOMER, UserRole.MANAGER], {
+            errorMap: () => ({
+                message: "Role can only be customer or manager",
+            }),
+        }),
+    }),
+});
+
 export const UserValidation = {
+    updateUserRoleSchema,
     userValidationSchema,
     createUserByAdminSchema,
     userProfileUpdateSchema,

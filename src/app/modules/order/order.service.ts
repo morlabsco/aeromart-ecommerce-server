@@ -20,7 +20,7 @@ const getAllOrders = async (query: Record<string, unknown>) => {
     const orderQuery = new QueryBuilder(
         Order.find()
             .populate("user", "name email photoUrl")
-            .populate("products.product", "name price imageUrls"),
+            .populate("products.product", "name slug price imageUrls"),
         query,
     )
         .search(OrderSearchableFields)
@@ -45,7 +45,7 @@ const getMyOrders = async (
     const orderQuery = new QueryBuilder(
         Order.find({ user: authUser.userId })
             .populate("user", "name email photoUrl")
-            .populate("products.product", "name price imageUrls"),
+            .populate("products.product", "name slug price imageUrls"),
         query,
     )
         .search(OrderSearchableFields)
@@ -68,7 +68,7 @@ const getOrderDetails = async (
 ) => {
     const order = await Order.findById(orderId)
         .populate("user", "name email photoUrl")
-        .populate("products.product", "name price imageUrls");
+        .populate("products.product", "name slug price imageUrls");
 
     if (!order) {
         throw new AppError(StatusCodes.NOT_FOUND, "Order not found!");
@@ -186,7 +186,7 @@ const createOrder = async (
 
         const populatedOrder = await Order.findById(createdOrder._id)
             .populate("user", "name email photoUrl")
-            .populate("products.product", "name price imageUrls");
+            .populate("products.product", "name slug price imageUrls");
 
         // Fire-and-forget activity log (not part of the transaction).
         await ActivityServices.logActivity({
@@ -233,11 +233,26 @@ const updateOrder = async (
         throw new AppError(StatusCodes.UNAUTHORIZED, "You are not authorized!");
     }
 
-    // Once paid/completed/cancelled, prevent edits to the financial core
-    if (["Completed", "Cancelled"].includes(order.status)) {
+    // Final states lock the order down , with one deliberate exception:
+    // a COMPLETED order still accepts payment verification (flipping a late
+    // bKash/bank transfer to Paid, correcting the method, or notes). The
+    // financial core (products, coupon, delivery) stays frozen. Cancelled
+    // orders accept nothing.
+    const isFinal = ["Completed", "Cancelled"].includes(order.status);
+    const touchesCore =
+        payload.products !== undefined ||
+        payload.coupon !== undefined ||
+        payload.deliveryOptionName !== undefined;
+    if (order.status === "Cancelled") {
         throw new AppError(
             StatusCodes.BAD_REQUEST,
-            `Cannot modify a ${order.status.toLowerCase()} order!`,
+            "Cannot modify a cancelled order!",
+        );
+    }
+    if (order.status === "Completed" && touchesCore) {
+        throw new AppError(
+            StatusCodes.BAD_REQUEST,
+            "This order is completed , its items, coupon and delivery can no longer be changed. Payment status and notes stay editable.",
         );
     }
 
@@ -309,11 +324,35 @@ const updateOrder = async (
         if (payload.notes !== undefined) {
             order.notes = payload.notes;
         }
-        // Payment method/status are staff-only controls — a customer editing
-        // their own order must never be able to flip themselves to Paid.
+        // Payment rules:
+        //  , staff (admin/manager) control method AND status
+        //  , the ORDER OWNER may switch their own method between the
+        //    customer-payable options (COD / manual bKash / manual bank) and
+        //    attach the manual reference — but NEVER the payment status, and
+        //    only while the order is still open (not Completed/Cancelled).
         const isStaff =
             authUser?.role === "admin" || authUser?.role === "manager";
-        if (payload.paymentMethod && isStaff) {
+        const isOwner = Boolean(
+            authUser && order.user && order.user.toString() === authUser.userId,
+        );
+        if (payload.paymentMethod && (isStaff || isOwner)) {
+            if (
+                !isStaff &&
+                !["COD", "bkash-manual", "bank-manual"].includes(
+                    payload.paymentMethod as string,
+                )
+            ) {
+                throw new AppError(
+                    StatusCodes.BAD_REQUEST,
+                    "You can only switch between Cash on Delivery, bKash (manual) and Bank (manual).",
+                );
+            }
+            if (order.status === "Completed" && !isStaff) {
+                throw new AppError(
+                    StatusCodes.BAD_REQUEST,
+                    "This order is completed , its payment can no longer be changed. Contact support.",
+                );
+            }
             order.paymentMethod = payload.paymentMethod;
         }
         if (payload.paymentStatus && isStaff) {
@@ -343,7 +382,7 @@ const updateOrder = async (
 
         const populatedOrder = await Order.findById(order._id)
             .populate("user", "name email photoUrl")
-            .populate("products.product", "name price imageUrls");
+            .populate("products.product", "name slug price imageUrls");
 
         await ActivityServices.logActivity({
             module: ActivityModule.ORDER,
@@ -408,7 +447,7 @@ const changeOrderStatus = async (
         { new: true },
     )
         .populate("user", "name email photoUrl")
-        .populate("products.product", "name price imageUrls");
+        .populate("products.product", "name slug price imageUrls");
 
     await ActivityServices.logActivity({
         module: ActivityModule.ORDER,
@@ -472,7 +511,7 @@ const deleteOrder = async (orderId: string, authUser: IJwtPayload) => {
 const trackOrder = async (orderId: string) => {
     const order = await Order.findOne({ orderId })
         .populate("user", "name email photoUrl")
-        .populate("products.product", "name price imageUrls");
+        .populate("products.product", "name slug price imageUrls");
 
     if (!order) {
         throw new AppError(StatusCodes.NOT_FOUND, "Order not found!");
@@ -480,6 +519,7 @@ const trackOrder = async (orderId: string) => {
 
     const products = order.products.map((item: any) => ({
         productId: item.product?._id?.toString(),
+        slug: item.product?.slug || "",
         name: item.product?.name || "Unknown Product",
         image: item.product?.imageUrls?.[0]?.url || "",
         quantity: item.quantity,
@@ -554,7 +594,7 @@ const getInvoiceData = async (orderId: string, by?: string) => {
 
     const order = await Order.findOne(lookup)
         .populate("user", "name email phoneNo address")
-        .populate("products.product", "name price imageUrls");
+        .populate("products.product", "name slug price imageUrls");
 
     if (!order) {
         throw new AppError(StatusCodes.NOT_FOUND, "Order not found!");
@@ -588,6 +628,7 @@ const getInvoiceData = async (orderId: string, by?: string) => {
         },
         items: order.products.map((item: any) => ({
             productId: item.product?._id?.toString(),
+            slug: item.product?.slug || "",
             name: item.product?.name || "Unknown Product",
             image: item.product?.imageUrls?.[0]?.url || "",
             quantity: item.quantity,

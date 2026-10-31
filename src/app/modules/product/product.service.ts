@@ -182,7 +182,7 @@ const createProduct = async (
         if (totalFiles > totalPlaceholders) {
             throw new AppError(
                 StatusCodes.BAD_REQUEST,
-                `Received ${totalFiles} variant image file(s) but only ${totalPlaceholders} placeholder slot(s) were declared across all variants. Add one placeholder ({}) per new variant image in each variant's imageUrls.`,
+                `Variant image mismatch: you uploaded ${totalFiles} image file(s) but the variants declare only ${totalPlaceholders} empty slot(s). HOW TO FIX: in the Variants section, add one empty slot (the "{}" placeholder button under a variant's images) for EVERY new image you upload, then upload the files in the same order. Existing images keep their own thumbnails , placeholders are only for NEW uploads.`,
             );
         }
 
@@ -351,7 +351,7 @@ const updateProduct = async (
         if (totalFiles > totalPlaceholders) {
             throw new AppError(
                 StatusCodes.BAD_REQUEST,
-                `Received ${totalFiles} variant image file(s) but only ${totalPlaceholders} placeholder slot(s) were declared across all variants. Add one placeholder ({}) per new variant image in each variant's imageUrls.`,
+                `Variant image mismatch: you uploaded ${totalFiles} image file(s) but the variants declare only ${totalPlaceholders} empty slot(s). HOW TO FIX: in the Variants section, add one empty slot (the "{}" placeholder button under a variant's images) for EVERY new image you upload, then upload the files in the same order. Existing images keep their own thumbnails , placeholders are only for NEW uploads.`,
             );
         }
 
