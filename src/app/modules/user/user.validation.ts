@@ -10,6 +10,8 @@ const clientInfoSchema = z.object({
     userAgent: z.string().min(1, "User agent is required"),
 });
 
+// Public signup — role is forced to customer (validation + service both
+// enforce it; anything else in the payload is an escalation attempt).
 const userValidationSchema = z.object({
     body: z.object({
         email: z.string().email("Invalid email address"),
@@ -18,9 +20,27 @@ const userValidationSchema = z.object({
             .min(6, "Password must be at least 6 characters long"),
         name: z.string().min(1, "Name is required"),
         role: z
-            .enum([UserRole.CUSTOMER, UserRole.ADMIN])
-            .default(UserRole.CUSTOMER), // Match enum values in your code
+            .enum([UserRole.CUSTOMER, UserRole.ADMIN, UserRole.MANAGER])
+            .default(UserRole.CUSTOMER)
+            .refine((value) => value === UserRole.CUSTOMER, {
+                message: "Invalid role. Only customer is allowed.",
+            }),
         clientInfo: clientInfoSchema, // Nested schema for client info
+    }),
+});
+
+// Admin-only user creation from the dashboard (managers etc.).
+const createUserByAdminSchema = z.object({
+    body: z.object({
+        email: z.string().email("Invalid email address"),
+        password: z
+            .string()
+            .min(6, "Password must be at least 6 characters long"),
+        name: z.string().min(1, "Name is required"),
+        role: z
+            .enum([UserRole.CUSTOMER, UserRole.MANAGER, UserRole.ADMIN])
+            .default(UserRole.CUSTOMER),
+        phoneNo: z.string().trim().min(6).max(14).optional(),
     }),
 });
 
@@ -59,5 +79,6 @@ const userProfileUpdateSchema = z.object({
 
 export const UserValidation = {
     userValidationSchema,
+    createUserByAdminSchema,
     userProfileUpdateSchema,
 };

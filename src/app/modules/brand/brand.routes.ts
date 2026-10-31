@@ -15,7 +15,7 @@ router.get("/:id", BrandController.getSingleBrand);
 
 router.post(
     "/",
-    auth(UserRole.ADMIN),
+    auth(UserRole.ADMIN, UserRole.MANAGER),
     multerUpload.single("logo"),
     parseBody,
     validateRequest(BrandValidation.createBrandValidationSchema),
@@ -24,7 +24,7 @@ router.post(
 
 router.patch(
     "/:id",
-    auth(UserRole.ADMIN),
+    auth(UserRole.ADMIN, UserRole.MANAGER),
     multerUpload.single("logo"),
     parseBody,
     validateRequest(BrandValidation.updateBrandValidationSchema),

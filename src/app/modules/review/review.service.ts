@@ -9,6 +9,7 @@ import { IJwtPayload } from "../auth/auth.interface";
 import { ActivityServices } from "../activity/activity.service";
 import { ActivityModule, ActivityType } from "../activity/activity.interface";
 import { recalcProductRating, hasVerifiedPurchase } from "./review.utils";
+import { destroyCloudinaryUrls } from "../../config/cloudinary.config";
 
 const getAllReviews = async (query: Record<string, unknown>) => {
     const reviewQuery = new QueryBuilder(
@@ -148,7 +149,10 @@ const createReview = async (
 };
 
 // Admin toggles a review's isFlagged status
-const toggleReviewFlag = async (reviewId: string) => {
+const toggleReviewFlag = async (
+    reviewId: string,
+    authUser: IJwtPayload,
+) => {
     const review = await Review.checkReviewExist(reviewId);
 
     review.isFlagged = !review.isFlagged;
@@ -162,6 +166,7 @@ const toggleReviewFlag = async (reviewId: string) => {
         type: ActivityType.STATUS,
         message: `Review ${review.isFlagged ? "flagged" : "unflagged"}`,
         referenceId: review._id.toString(),
+        performedBy: authUser.userId,
         metadata: { isFlagged: review.isFlagged },
     });
 
@@ -169,10 +174,18 @@ const toggleReviewFlag = async (reviewId: string) => {
 };
 
 // Admin deletes a review (hard delete) and removes it from the product
-const deleteReview = async (reviewId: string) => {
+const deleteReview = async (
+    reviewId: string,
+    authUser: IJwtPayload,
+) => {
     const review = await Review.checkReviewExist(reviewId);
 
     const productId = review.product;
+
+    // Hard delete — also remove any customer-uploaded photos from Cloudinary.
+    if (review.photoUrls?.length) {
+        await destroyCloudinaryUrls(review.photoUrls);
+    }
 
     await Review.findByIdAndDelete(reviewId);
 
@@ -191,6 +204,7 @@ const deleteReview = async (reviewId: string) => {
         type: ActivityType.DELETE,
         message: "A review was deleted",
         referenceId: reviewId,
+        performedBy: authUser.userId,
     });
 
     return review;

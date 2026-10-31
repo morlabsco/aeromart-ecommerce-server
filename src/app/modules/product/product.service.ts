@@ -240,6 +240,7 @@ const updateProduct = async (
     },
     files?: IImageFile[],
     variantFiles?: IImageFile[],
+    authUser?: IJwtPayload,
 ) => {
     const existingProduct = await Product.checkProductExist(productId);
 
@@ -382,14 +383,23 @@ const updateProduct = async (
     const removedIds = payload.removedImageIds || [];
 
     // Preserve existing URLs when keepImages only provide publicId+order.
+    // Two lookup keys: Cloudinary uploads match by publicId; legacy/external
+    // images (publicId "") match by url.
     const existingImages = (existingProduct.imageUrls as any[]) || [];
     const imageByPublicId = new Map(
-        existingImages.map((img) => [img.publicId, img]),
+        existingImages.filter((img) => img.publicId).map((img) => [img.publicId, img]),
+    );
+    const imageByUrl = new Map(
+        existingImages.filter((img) => img.url).map((img) => [img.url, img]),
     );
 
     const keepImages = (payload.keepImages || []).map((img) => ({
-        publicId: img.publicId,
-        url: img.url || imageByPublicId.get(img.publicId)?.url || "",
+        publicId: img.publicId || "",
+        url:
+            img.url ||
+            imageByPublicId.get(img.publicId)?.url ||
+            imageByUrl.get(img.url)?.url ||
+            "",
         order: img.order,
     }));
 
@@ -498,6 +508,7 @@ const updateProduct = async (
         type: ActivityType.UPDATE,
         message: `Product "${result?.name}" was updated`,
         referenceId: productId,
+        performedBy: authUser?.userId,
         metadata: {
             imagesKept: keepImages.length,
             imagesAdded: newImages.length,
@@ -509,7 +520,10 @@ const updateProduct = async (
     return result;
 };
 
-const deleteProduct = async (productId: string) => {
+const deleteProduct = async (
+    productId: string,
+    authUser: IJwtPayload,
+) => {
     const product = await Product.checkProductExist(productId);
 
     product.isDeleted = true;
@@ -521,12 +535,51 @@ const deleteProduct = async (productId: string) => {
         type: ActivityType.DELETE,
         message: `Product "${product.name}" was deleted`,
         referenceId: product._id.toString(),
+        performedBy: authUser.userId,
     });
 
     return product;
 };
 
+// Bulk currency restamp — every product's `currency` field follows the
+// store's brand currency. Values are untouched (display is brand-first
+// anyway; this keeps stamps honest for exports/invoices).
+const restampAllProductCurrencies = async (
+    currency: string,
+    authUser: IJwtPayload,
+) => {
+    // Validate against the same set the settings schema uses, so a typo can't
+    // stamp garbage across the whole catalog.
+    const supported = ["bdt", "usd", "eur", "gbp", "inr"];
+    const normalized = currency.toLowerCase();
+    if (!supported.includes(normalized)) {
+        throw new AppError(
+            StatusCodes.BAD_REQUEST,
+            `Unsupported currency "${currency}"!`,
+        );
+    }
+
+    const result = await Product.updateMany(
+        { isDeleted: { $ne: true } },
+        { $set: { currency: normalized } },
+    );
+
+    await ActivityServices.logActivity({
+        module: ActivityModule.PRODUCT,
+        type: ActivityType.UPDATE,
+        message: `All products were restamped to currency ${normalized.toUpperCase()}`,
+        performedBy: authUser.userId,
+        metadata: { matched: result.matchedCount, modified: result.modifiedCount },
+    });
+
+    return {
+        matched: result.matchedCount,
+        modified: result.modifiedCount,
+    };
+};
+
 export const ProductServices = {
+    restampAllProductCurrencies,
     getAllProducts,
     getSingleProduct,
     createProduct,

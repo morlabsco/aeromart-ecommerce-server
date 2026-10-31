@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CouponServices } from "./coupon.service";
+import { IJwtPayload } from "../auth/auth.interface";
 import { StatusCodes } from "http-status-codes";
 import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
@@ -41,7 +42,10 @@ const getCouponByCode = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createCoupon = catchAsync(async (req: Request, res: Response) => {
-    const result = await CouponServices.createCoupon(req.body);
+    const result = await CouponServices.createCoupon(
+        req.body,
+        req.user as IJwtPayload,
+    );
 
     sendResponse(res, {
         statusCode: StatusCodes.CREATED,
@@ -53,7 +57,11 @@ const createCoupon = catchAsync(async (req: Request, res: Response) => {
 
 const updateCoupon = catchAsync(async (req: Request, res: Response) => {
     const couponId = req.params.couponId as string;
-    const result = await CouponServices.updateCoupon(couponId, req.body);
+    const result = await CouponServices.updateCoupon(
+        couponId,
+        req.body,
+        req.user as IJwtPayload,
+    );
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
@@ -65,7 +73,10 @@ const updateCoupon = catchAsync(async (req: Request, res: Response) => {
 
 const deleteCoupon = catchAsync(async (req: Request, res: Response) => {
     const couponId = req.params.couponId as string;
-    const result = await CouponServices.deleteCoupon(couponId);
+    const result = await CouponServices.deleteCoupon(
+        couponId,
+        req.user as IJwtPayload,
+    );
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,

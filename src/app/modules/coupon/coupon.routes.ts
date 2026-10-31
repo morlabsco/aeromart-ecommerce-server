@@ -7,11 +7,11 @@ import auth from "../../middleware/auth";
 
 const router = Router();
 
-router.get("/", auth(UserRole.ADMIN), CouponController.getAllCoupons);
+router.get("/", auth(UserRole.ADMIN, UserRole.MANAGER), CouponController.getAllCoupons);
 
 router.get(
     "/:couponId",
-    auth(UserRole.ADMIN),
+    auth(UserRole.ADMIN, UserRole.MANAGER),
     CouponController.getSingleCoupon,
 );
 
@@ -19,14 +19,14 @@ router.get("/by-code/:code", CouponController.getCouponByCode);
 
 router.post(
     "/",
-    auth(UserRole.ADMIN),
+    auth(UserRole.ADMIN, UserRole.MANAGER),
     validateRequest(CouponValidation.createCouponValidationSchema),
     CouponController.createCoupon,
 );
 
 router.patch(
     "/:couponId",
-    auth(UserRole.ADMIN),
+    auth(UserRole.ADMIN, UserRole.MANAGER),
     validateRequest(CouponValidation.updateCouponValidationSchema),
     CouponController.updateCoupon,
 );

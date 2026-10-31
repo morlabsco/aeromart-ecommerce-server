@@ -38,6 +38,10 @@ const reviewSchema = new Schema<IReview, ReviewModel>(
             type: Boolean,
             default: false,
         },
+        photoUrls: {
+            type: [String],
+            default: [],
+        },
     },
     {
         timestamps: true,

@@ -10,7 +10,10 @@ import User from "../modules/user/user.model";
 const auth = (...requiredRoles: UserRole[]) => {
     return catchAsync(
         async (req: Request, res: Response, next: NextFunction) => {
-            const token = req.headers.authorization;
+            const token = (req.headers.authorization ?? "").replace(
+                /^Bearer\s+/i,
+                "",
+            ).trim();
 
             if (!token) {
                 throw new AppError(

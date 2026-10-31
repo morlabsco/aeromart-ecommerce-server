@@ -45,6 +45,12 @@ const getMyReviews = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createReview = catchAsync(async (req: Request, res: Response) => {
+    // Uploaded photos (optional, max 3) become Cloudinary URLs on the review.
+    const files = (req.files as Express.Multer.File[] | undefined) ?? [];
+    if (files.length) {
+        req.body.photoUrls = files.map((file) => file.path);
+    }
+
     const result = await ReviewServices.createReview(
         req.body,
         req.user as IJwtPayload,
@@ -60,7 +66,10 @@ const createReview = catchAsync(async (req: Request, res: Response) => {
 
 const toggleReviewFlag = catchAsync(async (req: Request, res: Response) => {
     const reviewId = req.params.reviewId as string;
-    const result = await ReviewServices.toggleReviewFlag(reviewId);
+    const result = await ReviewServices.toggleReviewFlag(
+        reviewId,
+        req.user as IJwtPayload,
+    );
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
@@ -72,7 +81,10 @@ const toggleReviewFlag = catchAsync(async (req: Request, res: Response) => {
 
 const deleteReview = catchAsync(async (req: Request, res: Response) => {
     const reviewId = req.params.reviewId as string;
-    const result = await ReviewServices.deleteReview(reviewId);
+    const result = await ReviewServices.deleteReview(
+        reviewId,
+        req.user as IJwtPayload,
+    );
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,

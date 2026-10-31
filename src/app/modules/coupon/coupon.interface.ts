@@ -1,4 +1,4 @@
-import { Document, Model } from "mongoose";
+import { Document, Model, Types } from "mongoose";
 
 export enum DiscountType {
     PERCENTAGE = "percentage",
@@ -11,6 +11,10 @@ export interface ICoupon extends Document {
     discountValue: number;
     minOrderAmount: number;
     maxDiscountAmount: number;
+    /** Product ids this coupon is scoped to — EMPTY/absent means it applies
+     * to the whole order. When set, only these products' subtotal counts
+     * toward the minimum and receives the discount. */
+    applicableProducts?: Types.ObjectId[];
     startDate: Date;
     endDate: Date;
     isActive: boolean;

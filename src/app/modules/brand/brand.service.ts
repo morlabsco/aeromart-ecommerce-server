@@ -60,7 +60,7 @@ const createBrand = async (
         type: ActivityType.CREATE,
         message: `Brand "${brand.name}" was created`,
         referenceId: brand._id.toString(),
-        performedBy: authUser.userId,
+        performedBy: authUser?.userId,
     });
 
     return brand;
@@ -70,6 +70,7 @@ const updateBrand = async (
     brandId: string,
     payload: Partial<IBrand>,
     file?: IImageFile,
+    authUser?: IJwtPayload,
 ) => {
     const existing = await Brand.checkBrandExist(brandId);
 
@@ -99,12 +100,16 @@ const updateBrand = async (
         type: ActivityType.UPDATE,
         message: `Brand "${result?.name}" was updated`,
         referenceId: brandId,
+        performedBy: authUser?.userId,
     });
 
     return result;
 };
 
-const deleteBrand = async (brandId: string) => {
+const deleteBrand = async (
+    brandId: string,
+    authUser: IJwtPayload,
+) => {
     const brand = await Brand.checkBrandExist(brandId);
 
     brand.isDeleted = true;
@@ -115,6 +120,7 @@ const deleteBrand = async (brandId: string) => {
         type: ActivityType.DELETE,
         message: `Brand "${brand.name}" was deleted`,
         referenceId: brand._id.toString(),
+        performedBy: authUser?.userId,
     });
 
     return brand;

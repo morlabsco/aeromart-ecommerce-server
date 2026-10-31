@@ -13,6 +13,13 @@ const createCouponValidationSchema = z.object({
                 .min(0, "Discount value must be a positive number"),
             minOrderAmount: z.number().min(0).optional().default(0),
             maxDiscountAmount: z.number().min(0).optional().default(0),
+            // Product-scoped coupons: empty/omitted = applies to the whole
+            // order. Mongo ObjectIds only (cast errors become 400s).
+            applicableProducts: z
+                .array(z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid product id"))
+                .max(100, "A coupon can target at most 100 products")
+                .optional()
+                .default([]),
             startDate: z.string().min(1, "Start date is required"),
             endDate: z.string().min(1, "End date is required"),
             isActive: z.boolean().optional().default(true),
@@ -63,6 +70,10 @@ const updateCouponValidationSchema = z.object({
                 .optional(),
             minOrderAmount: z.number().min(0).optional(),
             maxDiscountAmount: z.number().min(0).optional(),
+            applicableProducts: z
+                .array(z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid product id"))
+                .max(100, "A coupon can target at most 100 products")
+                .optional(),
             startDate: z.string().optional(),
             endDate: z.string().optional(),
             isActive: z.boolean().optional(),

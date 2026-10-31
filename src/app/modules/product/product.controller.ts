@@ -5,6 +5,7 @@ import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
 import { IImageFiles } from "../../interface/IImageFile";
 import { IJwtPayload } from "../auth/auth.interface";
+import AppError from "../../errors/appError";
 
 const getAllProducts = catchAsync(async (req: Request, res: Response) => {
     const result = await ProductServices.getAllProducts(req.query);
@@ -59,6 +60,7 @@ const updateProduct = catchAsync(async (req: Request, res: Response) => {
         req.body,
         mainImages,
         variantImages,
+        req.user as IJwtPayload,
     );
 
     sendResponse(res, {
@@ -71,7 +73,10 @@ const updateProduct = catchAsync(async (req: Request, res: Response) => {
 
 const deleteProduct = catchAsync(async (req: Request, res: Response) => {
     const { productId } = req.params;
-    const result = await ProductServices.deleteProduct(productId as string);
+    const result = await ProductServices.deleteProduct(
+        productId as string,
+        req.user as IJwtPayload,
+    );
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
@@ -81,7 +86,34 @@ const deleteProduct = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+// Admin-only: bulk-restamp every product's currency to the store's brand
+// currency. Price VALUES are never converted — only the stamp follows.
+const restampAllProductCurrencies = catchAsync(
+    async (req: Request, res: Response) => {
+        const currency = String(req.body?.currency ?? "").trim().toLowerCase();
+        if (!currency) {
+            throw new AppError(
+                StatusCodes.BAD_REQUEST,
+                "A currency code is required!",
+            );
+        }
+
+        const result = await ProductServices.restampAllProductCurrencies(
+            currency,
+            req.user as IJwtPayload,
+        );
+
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: `All products now use ${currency.toUpperCase()}`,
+            data: result,
+        });
+    },
+);
+
 export const ProductController = {
+    restampAllProductCurrencies,
     getAllProducts,
     getSingleProduct,
     createProduct,

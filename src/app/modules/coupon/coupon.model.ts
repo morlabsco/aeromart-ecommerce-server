@@ -32,6 +32,12 @@ const couponSchema = new Schema<ICoupon, CouponModel>(
             default: 0,
             min: 0,
         },
+        applicableProducts: {
+            type: [Schema.Types.ObjectId],
+            ref: "Product",
+            default: [],
+        },
+
         startDate: {
             type: Date,
             required: true,

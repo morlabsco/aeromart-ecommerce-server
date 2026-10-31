@@ -51,6 +51,7 @@ const updateCategory = catchAsync(async (req: Request, res: Response) => {
         id,
         req.body,
         req.file as IImageFile,
+        req.user as IJwtPayload,
     );
 
     sendResponse(res, {
@@ -63,7 +64,10 @@ const updateCategory = catchAsync(async (req: Request, res: Response) => {
 
 const deleteCategory = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
-    const result = await CategoryServices.deleteCategory(id);
+    const result = await CategoryServices.deleteCategory(
+        id,
+        req.user as IJwtPayload,
+    );
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,

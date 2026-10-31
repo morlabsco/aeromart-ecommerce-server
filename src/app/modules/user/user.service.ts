@@ -19,12 +19,15 @@ const registerUser = async (userData: IUser) => {
     try {
         session.startTransaction();
 
-        if ([UserRole.ADMIN].includes(userData.role)) {
+        // Public registration is ALWAYS a customer — any other role in the
+        // payload (admin, manager) is a privilege-escalation attempt.
+        if (userData.role && userData.role !== UserRole.CUSTOMER) {
             throw new AppError(
                 StatusCodes.NOT_ACCEPTABLE,
-                "Invalid role. Only User is allowed.",
+                "Invalid role. Only customer is allowed.",
             );
         }
+        userData.role = UserRole.CUSTOMER;
 
         // Check if the user already exists by email
         const existingUser = await User.findOne({
@@ -148,11 +151,21 @@ const updateProfile = async (
     return result;
 };
 
-const updateUserStatus = async (userId: string) => {
+const updateUserStatus = async (
+    userId: string,
+    authUser: IJwtPayload,
+) => {
     const user = await User.findById(userId);
 
     if (!user) {
         throw new AppError(StatusCodes.NOT_FOUND, "User is not found");
+    }
+
+    if (String(user._id) === authUser.userId) {
+        throw new AppError(
+            StatusCodes.BAD_REQUEST,
+            "You cannot deactivate your own account!",
+        );
     }
 
     user.isActive = !user.isActive;
@@ -163,14 +176,55 @@ const updateUserStatus = async (userId: string) => {
         type: ActivityType.STATUS,
         message: `User "${user.name}" is now ${user.isActive ? "active" : "inactive"}`,
         referenceId: user._id.toString(),
+        performedBy: authUser.userId,
         metadata: { isActive: user.isActive },
     });
 
     return updatedUser;
 };
 
+// Admin-only: create a dashboard user (manager/customer/admin) from the
+// panel — the ONLY path that can mint a non-customer role.
+const createUserByAdmin = async (
+    userData: Partial<IUser>,
+    authUser: IJwtPayload,
+) => {
+    const existingUser = await User.findOne({ email: userData.email });
+    if (existingUser) {
+        throw new AppError(
+            StatusCodes.NOT_ACCEPTABLE,
+            "Email is already registered",
+        );
+    }
+
+    // Admin-created users carry synthetic client info (first login overwrites it).
+    const user = new User({
+        ...userData,
+        role: userData.role || UserRole.CUSTOMER,
+        clientInfo: {
+            device: "pc",
+            browser: "Dashboard",
+            ipAddress: "0.0.0.0",
+            userAgent: `created by ${authUser.email}`,
+        },
+    });
+    const createdUser = await user.save();
+
+    await ActivityServices.logActivity({
+        module: ActivityModule.USER,
+        type: ActivityType.CREATE,
+        message: `User "${createdUser.name}" (${createdUser.email}) was created as ${createdUser.role} from the dashboard`,
+        referenceId: createdUser._id.toString(),
+        performedBy: authUser.userId,
+        metadata: { role: createdUser.role },
+    });
+
+    return createdUser;
+};
+
 export const UserServices = {
     registerUser,
+    createUserByAdmin,
     getAllUser,
     myProfile,
     updateUserStatus,

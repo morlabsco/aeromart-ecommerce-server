@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { OrderStatus, PaymentMethod } from "./order.interface";
+import { OrderStatus, PaymentMethod, PaymentStatus } from "./order.interface";
 
 const orderProductSchema = z.object({
     product: z.string().min(1, "Product ID is required"),
@@ -52,6 +52,13 @@ const updateOrderValidationSchema = z.object({
         paymentMethod: z
             .nativeEnum(PaymentMethod, {
                 errorMap: () => ({ message: "Invalid payment method" }),
+            })
+            .optional(),
+        // Staff-only in the service (customers editing their own order can't
+        // touch the payment state).
+        paymentStatus: z
+            .nativeEnum(PaymentStatus, {
+                errorMap: () => ({ message: "Invalid payment status" }),
             })
             .optional(),
     }),

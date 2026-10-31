@@ -15,6 +15,7 @@ import {
     defaultDeliveryOptions,
 } from "./settings.presets";
 import { ActivityServices } from "../activity/activity.service";
+import { IJwtPayload } from "../auth/auth.interface";
 import { ActivityModule, ActivityType } from "../activity/activity.interface";
 import { mapSectionFiles } from "./settings.utils";
 import { destroyCloudinaryUrls } from "../../config/cloudinary.config";
@@ -86,6 +87,7 @@ const updateSection = async <K extends SettingsSection>(
     section: K,
     data: Partial<ISettings[K]>,
     files?: Express.Multer.File[],
+    authUser?: IJwtPayload,
 ) => {
     const body = mapSectionFiles(section, data, files);
 
@@ -123,6 +125,7 @@ const updateSection = async <K extends SettingsSection>(
         module: ActivityModule.SETTINGS,
         type: ActivityType.UPDATE,
         message: `Settings section "${section}" was updated`,
+        performedBy: authUser?.userId,
         metadata: { section },
     });
 
@@ -132,6 +135,7 @@ const updateSection = async <K extends SettingsSection>(
 const updateBrandFields = async (
     payload: Partial<ISettings["brand"]>,
     files?: { logo?: Express.Multer.File[]; favicon?: Express.Multer.File[] },
+    authUser?: IJwtPayload,
 ) => {
     // Build a $set with dotted paths — ONLY for fields actually provided.
     // This preserves any field the client didn't send (e.g. logo/favicon stay
@@ -200,6 +204,7 @@ const updateBrandFields = async (
         module: ActivityModule.SETTINGS,
         type: ActivityType.UPDATE,
         message: "Brand settings were updated",
+        performedBy: authUser?.userId,
         metadata: { fields: Object.keys(set) },
     });
 
@@ -208,7 +213,10 @@ const updateBrandFields = async (
 
 // Applies ONLY the niche theme (colors, fonts, radius, globalCss).
 // The rest of the settings doc (brand, hero, navbar, footer, ...) is untouched.
-const applyNichePreset = async (niche: string) => {
+const applyNichePreset = async (
+    niche: string,
+    authUser?: IJwtPayload,
+) => {
     const preset = settingsPresets[niche];
 
     if (!preset) {
@@ -237,6 +245,7 @@ const applyNichePreset = async (niche: string) => {
         module: ActivityModule.SETTINGS,
         type: ActivityType.PRESET,
         message: `"${niche}" niche theme was applied`,
+        performedBy: authUser?.userId,
         metadata: { niche, scope: "theme" },
     });
 
@@ -341,7 +350,10 @@ const emptyPresetDefaults = () => ({
     },
 });
 
-const applyFullReset = async (niche: string) => {
+const applyFullReset = async (
+    niche: string,
+    authUser?: IJwtPayload,
+) => {
     const existing = await Settings.findById(SETTINGS_ID);
 
     // Preserve customized currency + delivery options when present.
@@ -434,6 +446,7 @@ const applyFullReset = async (niche: string) => {
             niche === "empty"
                 ? "Settings were reset to empty defaults"
                 : `Settings were fully reset to the "${niche}" niche preset`,
+        performedBy: authUser?.userId,
         metadata: { niche, scope: niche === "empty" ? "empty" : "full-reset" },
     });
 

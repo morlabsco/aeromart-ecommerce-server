@@ -8,7 +8,7 @@ import optionalAuth from "../../middleware/optionalAuth";
 
 const router = Router();
 
-router.get("/", auth(UserRole.ADMIN), OrderController.getAllOrders);
+router.get("/", auth(UserRole.ADMIN, UserRole.MANAGER), OrderController.getAllOrders);
 
 router.get(
     "/my-orders",
@@ -31,7 +31,7 @@ router.get(
 
 router.get(
     "/:orderId",
-    auth(UserRole.ADMIN, UserRole.CUSTOMER),
+    auth(UserRole.ADMIN, UserRole.MANAGER, UserRole.CUSTOMER),
     OrderController.getOrderDetails,
 );
 
@@ -45,16 +45,23 @@ router.post(
 
 router.patch(
     "/:orderId",
-    auth(UserRole.ADMIN, UserRole.CUSTOMER),
+    auth(UserRole.ADMIN, UserRole.MANAGER, UserRole.CUSTOMER),
     validateRequest(OrderValidation.updateOrderValidationSchema),
     OrderController.updateOrder,
 );
 
 router.patch(
     "/:orderId/status",
-    auth(UserRole.ADMIN),
+    auth(UserRole.ADMIN, UserRole.MANAGER),
     validateRequest(OrderValidation.updateOrderStatusValidationSchema),
     OrderController.changeOrderStatus,
+);
+
+// Admin-only hard delete (managers never delete).
+router.delete(
+    "/:orderId",
+    auth(UserRole.ADMIN),
+    OrderController.deleteOrder,
 );
 
 export const OrderRoutes = router;

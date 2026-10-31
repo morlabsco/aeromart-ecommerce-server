@@ -155,6 +155,10 @@ const orderSchema = new Schema<IOrder, OrderModel>(
             enum: Object.values(PaymentStatus),
             default: PaymentStatus.PENDING,
         },
+        stockRestored: {
+            type: Boolean,
+            default: false,
+        },
         paymentProvider: {
             type: String,
             enum: Object.values(PaymentProvider),

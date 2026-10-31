@@ -6,6 +6,7 @@ import Coupon from "./coupon.model";
 import { CouponSearchableFields } from "./coupon.constant";
 import { ActivityServices } from "../activity/activity.service";
 import { ActivityModule, ActivityType } from "../activity/activity.interface";
+import { IJwtPayload } from "../auth/auth.interface";
 
 const getAllCoupons = async (query: Record<string, unknown>) => {
     const couponQuery = new QueryBuilder(
@@ -63,7 +64,10 @@ const getCouponByCode = async (couponCode: string) => {
     return coupon;
 };
 
-const createCoupon = async (payload: ICoupon) => {
+const createCoupon = async (
+    payload: ICoupon,
+    authUser: IJwtPayload,
+) => {
     const isUnique = await Coupon.isCouponCodeUnique(payload.code);
     if (!isUnique) {
         throw new AppError(
@@ -104,6 +108,7 @@ const createCoupon = async (payload: ICoupon) => {
         message: `Coupon "${coupon.code}" was created`,
         referenceId: coupon._id.toString(),
         reference: coupon.code,
+        performedBy: authUser.userId,
     });
 
     return coupon;
@@ -112,6 +117,7 @@ const createCoupon = async (payload: ICoupon) => {
 const updateCoupon = async (
     couponId: string,
     payload: Partial<ICoupon>,
+    authUser: IJwtPayload,
 ) => {
     const coupon = await Coupon.findOne({
         _id: couponId,
@@ -177,12 +183,13 @@ const updateCoupon = async (
         message: `Coupon "${result?.code}" was updated`,
         referenceId: coupon._id.toString(),
         reference: result?.code,
+        performedBy: authUser.userId,
     });
 
     return result;
 };
 
-const deleteCoupon = async (couponId: string) => {
+const deleteCoupon = async (couponId: string, authUser: IJwtPayload) => {
     const coupon = await Coupon.checkCouponExist(couponId);
 
     coupon.isDeleted = true;
@@ -194,6 +201,7 @@ const deleteCoupon = async (couponId: string) => {
         message: `Coupon "${coupon.code}" was deleted`,
         referenceId: coupon._id.toString(),
         reference: coupon.code,
+        performedBy: authUser.userId,
     });
 
     return coupon;

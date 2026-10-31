@@ -144,11 +144,25 @@ const updateProductValidationSchema = z.object({
         // (reordered), and removed image publicIds to delete from Cloudinary.
         keepImages: z
             .array(
-                z.object({
-                    publicId: z.string().min(1),
-                    url: z.string().optional(),
-                    order: z.number().min(0).default(0),
-                }),
+                z
+                    .object({
+                        // Legacy/external images were never uploaded to
+                        // Cloudinary and carry an EMPTY publicId — they are
+                        // identified by url instead, so either field works.
+                        publicId: z.string().optional().default(""),
+                        url: z.string().optional(),
+                        order: z.number().min(0).default(0),
+                    })
+                    .superRefine((img, ctx) => {
+                        if (!img.publicId && !img.url) {
+                            ctx.addIssue({
+                                code: z.ZodIssueCode.custom,
+                                message:
+                                    "Kept images need a publicId or a url!",
+                                path: ["publicId"],
+                            });
+                        }
+                    }),
             )
             .optional(),
         removedImageIds: z.array(z.string()).optional(),

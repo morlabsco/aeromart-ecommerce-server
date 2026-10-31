@@ -8,6 +8,8 @@ export interface IReview extends Document {
     isFlagged: boolean;
     flaggedReason?: string;
     isVerifiedPurchase: boolean;
+    /** Optional customer-uploaded photos (Cloudinary URLs, max 3). */
+    photoUrls: string[];
     createdAt: Date;
     updatedAt: Date;
 }

@@ -11,10 +11,14 @@ export enum OrderStatus {
     CANCELLED = "Cancelled",
 }
 
-// Payment method enum
+// Payment method enum. The manual methods carry their references in the
+// order `notes` (the admin verifies them by hand); "Online" is reserved for
+// gateway payments (Stripe/SSLCommerz/bKash) where paymentProvider applies.
 export enum PaymentMethod {
     COD = "COD",
     ONLINE = "Online",
+    BKASH_MANUAL = "bkash-manual",
+    BANK_MANUAL = "bank-manual",
 }
 
 // Payment status enum
@@ -75,6 +79,9 @@ export interface IOrder extends Document {
     notes?: string;
     paymentMethod: PaymentMethod;
     paymentStatus: PaymentStatus;
+    /** True once a cancellation (or delete) has returned the line stock —
+     * guards against restoring the same units twice. */
+    stockRestored?: boolean;
     paymentProvider?: PaymentProvider;
     // Payment tracking fields — raw gateway values (provider known via paymentProvider)
     stripeSessionId?: string;

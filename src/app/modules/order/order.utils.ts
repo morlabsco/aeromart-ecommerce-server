@@ -175,10 +175,13 @@ export const validateAndPriceProducts = async (
     return { priced, totalAmount: total, offerDiscount, currency: brandCurrency };
 };
 
-// Verify a coupon code and return the computed discount (0 if no coupon)
+// Verify a coupon code and return the computed discount (0 if no coupon).
+// `lines` are the (already priced) order lines — the coupon's discount base
+// is the FULL subtotal for store-wide coupons, or only the lines whose
+// product is in `applicableProducts` for product-scoped coupons.
 export const applyCoupon = async (
     couponCode: string | null | undefined,
-    totalAmount: number,
+    lines: { product: unknown; unitPrice: number; quantity: number }[],
 ) => {
     if (!couponCode) {
         return { coupon: null, discount: 0 };
@@ -206,7 +209,27 @@ export const applyCoupon = async (
     if (now > coupon.endDate) {
         throw new AppError(StatusCodes.BAD_REQUEST, "Coupon has expired!");
     }
-    if (totalAmount < coupon.minOrderAmount) {
+
+    const lineTotal = (line: { unitPrice: number; quantity: number }) =>
+        line.unitPrice * line.quantity;
+    const totalAmount = lines.reduce((sum, line) => sum + lineTotal(line), 0);
+
+    const scopedIds = (coupon.applicableProducts ?? [])
+        .map((id) => String(id))
+        .filter(Boolean);
+    const discountBase = scopedIds.length
+        ? lines
+              .filter((line) => scopedIds.includes(String(line.product)))
+              .reduce((sum, line) => sum + lineTotal(line), 0)
+        : totalAmount;
+
+    if (scopedIds.length && discountBase <= 0) {
+        throw new AppError(
+            StatusCodes.BAD_REQUEST,
+            "This coupon only applies to specific products , none of them are in this order!",
+        );
+    }
+    if (discountBase < coupon.minOrderAmount) {
         throw new AppError(
             StatusCodes.BAD_REQUEST,
             `Minimum order amount for this coupon is ${coupon.minOrderAmount}`,
@@ -215,7 +238,7 @@ export const applyCoupon = async (
 
     let discount = 0;
     if (coupon.discountType === DiscountType.PERCENTAGE) {
-        discount = (totalAmount * coupon.discountValue) / 100;
+        discount = (discountBase * coupon.discountValue) / 100;
         if (
             coupon.maxDiscountAmount > 0 &&
             discount > coupon.maxDiscountAmount
@@ -225,6 +248,8 @@ export const applyCoupon = async (
     } else {
         discount = coupon.discountValue;
     }
+    // A scoped fixed discount can never exceed its eligible subtotal.
+    discount = Math.min(discount, discountBase);
 
     // Never discount below zero / more than the total
     discount = Math.min(discount, totalAmount);

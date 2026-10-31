@@ -19,7 +19,10 @@ import { StatusCodes } from "http-status-codes";
 const optionalAuth = () => {
     return catchAsync(
         async (req: Request, _res: Response, next: NextFunction) => {
-            const token = req.headers.authorization;
+            const token = (req.headers.authorization ?? "").replace(
+                /^Bearer\s+/i,
+                "",
+            ).trim();
 
             if (!token) {
                 return next();

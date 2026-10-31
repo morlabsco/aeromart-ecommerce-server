@@ -3,6 +3,7 @@ import AppError from "../../errors/appError";
 import QueryBuilder from "../../builder/QueryBuilder";
 import NewsletterSubscriber from "./newsletter.model";
 import { NewsletterSearchableFields } from "./newsletter.constant";
+import { IJwtPayload } from "../auth/auth.interface";
 import { ActivityServices } from "../activity/activity.service";
 import { ActivityModule, ActivityType } from "../activity/activity.interface";
 
@@ -52,7 +53,10 @@ const getAllSubscribers = async (query: Record<string, unknown>) => {
     return { result, meta };
 };
 
-const deleteSubscriber = async (subscriberId: string) => {
+const deleteSubscriber = async (
+    subscriberId: string,
+    authUser?: IJwtPayload,
+) => {
     const subscriber = await NewsletterSubscriber.findByIdAndDelete(
         subscriberId,
     );
@@ -65,6 +69,7 @@ const deleteSubscriber = async (subscriberId: string) => {
         module: ActivityModule.SETTINGS,
         type: ActivityType.DELETE,
         message: `Newsletter subscriber removed: ${subscriber.email}`,
+        performedBy: authUser?.userId,
     });
 
     return subscriber;

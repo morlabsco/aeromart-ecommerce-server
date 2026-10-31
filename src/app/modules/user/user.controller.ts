@@ -72,7 +72,10 @@ const updateProfile = catchAsync(async (req, res) => {
 
 const updateUserStatus = catchAsync(async (req, res) => {
     const userId = req.params.id;
-    const result = await UserServices.updateUserStatus(userId as string);
+    const result = await UserServices.updateUserStatus(
+        userId as string,
+        req.user as IJwtPayload,
+    );
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
@@ -82,8 +85,24 @@ const updateUserStatus = catchAsync(async (req, res) => {
     });
 });
 
+// Admin-only: create a dashboard user (manager etc.) from the panel.
+const createUserByAdmin = catchAsync(async (req, res) => {
+    const result = await UserServices.createUserByAdmin(
+        req.body,
+        req.user as IJwtPayload,
+    );
+
+    sendResponse(res, {
+        statusCode: StatusCodes.CREATED,
+        success: true,
+        message: `User created successfully as ${result.role}`,
+        data: result,
+    });
+});
+
 export const UserController = {
     registerUser,
+    createUserByAdmin,
     getAllUser,
     myProfile,
     updateUserStatus,

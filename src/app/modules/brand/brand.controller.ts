@@ -51,6 +51,7 @@ const updateBrand = catchAsync(async (req: Request, res: Response) => {
         id,
         req.body,
         req.file as IImageFile,
+        req.user as IJwtPayload,
     );
 
     sendResponse(res, {
@@ -63,7 +64,10 @@ const updateBrand = catchAsync(async (req: Request, res: Response) => {
 
 const deleteBrand = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
-    const result = await BrandServices.deleteBrand(id);
+    const result = await BrandServices.deleteBrand(
+        id,
+        req.user as IJwtPayload,
+    );
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,

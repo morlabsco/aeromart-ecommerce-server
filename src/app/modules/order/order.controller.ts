@@ -119,7 +119,24 @@ const changeOrderStatus = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+// Admin-only hard delete (stock restored unless already cancelled).
+const deleteOrder = catchAsync(async (req: Request, res: Response) => {
+    const { orderId } = req.params;
+    const result = await OrderServices.deleteOrder(
+        orderId as string,
+        req.user as IJwtPayload,
+    );
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: `Order ${result.orderId} deleted successfully`,
+        data: result,
+    });
+});
+
 export const OrderController = {
+    deleteOrder,
     getAllOrders,
     getMyOrders,
     getOrderDetails,

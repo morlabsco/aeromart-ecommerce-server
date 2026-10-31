@@ -35,6 +35,7 @@ const deleteSubscriber = catchAsync(async (req: Request, res: Response) => {
     const { subscriberId } = req.params;
     const result = await NewsletterServices.deleteSubscriber(
         subscriberId as string,
+        req.user as any,
     );
 
     sendResponse(res, {

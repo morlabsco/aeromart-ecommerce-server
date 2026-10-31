@@ -12,13 +12,21 @@ const router = Router();
 
 router.get('/', auth(UserRole.ADMIN), UserController.getAllUser);
 
-router.get('/me', auth(UserRole.ADMIN, UserRole.CUSTOMER), UserController.myProfile);
+router.get('/me', auth(UserRole.ADMIN, UserRole.MANAGER, UserRole.CUSTOMER), UserController.myProfile);
 
 router.post(
     "/register",
     clientInfoParser,
     validateRequest(UserValidation.userValidationSchema),
     UserController.registerUser,
+);
+
+// Admin-only: create a dashboard user (manager/customer/admin).
+router.post(
+    "/",
+    auth(UserRole.ADMIN),
+    validateRequest(UserValidation.createUserByAdminSchema),
+    UserController.createUserByAdmin,
 );
 
 // Update profile

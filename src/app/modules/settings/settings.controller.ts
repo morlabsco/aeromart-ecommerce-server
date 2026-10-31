@@ -26,6 +26,7 @@ const updateBrandFields = catchAsync(async (req: Request, res: Response) => {
     const result = await SettingsServices.updateBrandFields(
         req.body.brand ?? req.body,
         files,
+        req.user as any,
     );
 
     sendResponse(res, {
@@ -49,6 +50,7 @@ const updateSection = catchAsync(async (req: Request, res: Response) => {
         section as any,
         req.body,
         files,
+        req.user as any,
     );
 
     sendResponse(res, {
@@ -66,7 +68,10 @@ const applyNichePreset = catchAsync(async (req: Request, res: Response) => {
         throw new AppError(StatusCodes.BAD_REQUEST, "Invalid niche!");
     }
 
-    const result = await SettingsServices.applyNichePreset(niche);
+    const result = await SettingsServices.applyNichePreset(
+        niche,
+        req.user as any,
+    );
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
@@ -83,7 +88,10 @@ const applyFullReset = catchAsync(async (req: Request, res: Response) => {
         throw new AppError(StatusCodes.BAD_REQUEST, "Invalid niche!");
     }
 
-    const result = await SettingsServices.applyFullReset(niche);
+    const result = await SettingsServices.applyFullReset(
+        niche,
+        req.user as any,
+    );
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,

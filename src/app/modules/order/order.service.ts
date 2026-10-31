@@ -1,4 +1,4 @@
-import { IOrder } from "./order.interface";
+import { IOrder, PaymentMethod, PaymentStatus } from "./order.interface";
 import Order from "./order.model";
 import Product from "../product/product.model";
 import AppError from "../../errors/appError";
@@ -74,9 +74,11 @@ const getOrderDetails = async (
         throw new AppError(StatusCodes.NOT_FOUND, "Order not found!");
     }
 
-    // Admin sees everything; the user who placed the order can see their own.
-    // Guest orders (user: null) have no owner — only admins can view them here.
-    const isAdmin = authUser?.role === "admin";
+    // Staff (admin/manager) sees everything; the user who placed the order
+    // can see their own. Guest orders (user: null) have no owner — only
+    // staff can view them here.
+    const isAdmin =
+        authUser?.role === "admin" || authUser?.role === "manager";
     const ownerId = order.user?._id?.toString() || order.user?.toString() || "";
     const isOwner = Boolean(
         authUser && ownerId && ownerId === authUser.userId,
@@ -105,7 +107,7 @@ const createOrder = async (
         // 2. Verify coupon and compute discount (coupon only)
         const { coupon, discount } = await applyCoupon(
             payload.coupon,
-            totalAmount,
+            priced as any,
         );
 
         // 3. Resolve the delivery charge from the selected option name —
@@ -149,7 +151,15 @@ const createOrder = async (
             phoneNo: payload.phoneNo,
             notes: payload.notes,
             paymentMethod: payload.paymentMethod,
-            paymentStatus: payload.paymentStatus || undefined,
+            // Business rule: COD stays Pending until delivery; MANUAL bKash /
+            // Bank transfers are marked Paid up-front (the customer attached
+            // their transaction reference — staff verify afterwards); gateway
+            // ("Online") orders stay Pending until the provider confirms.
+            paymentStatus:
+                payload.paymentMethod === PaymentMethod.BKASH_MANUAL ||
+                payload.paymentMethod === PaymentMethod.BANK_MANUAL
+                    ? PaymentStatus.PAID
+                    : payload.paymentStatus || PaymentStatus.PENDING,
         });
 
         const createdOrder = await order.save({ session });
@@ -211,9 +221,10 @@ const updateOrder = async (
         throw new AppError(StatusCodes.NOT_FOUND, "Order not found!");
     }
 
-    // Only the owner (of a non-guest order) or an admin can update an order.
-    // Guest orders (user: null) can only be updated by an admin.
-    const isAdmin = authUser?.role === "admin";
+    // Only the owner (of a non-guest order) or staff (admin/manager) can
+    // update an order. Guest orders (user: null) are staff-only.
+    const isAdmin =
+        authUser?.role === "admin" || authUser?.role === "manager";
     const isOwner = Boolean(
         authUser && order.user && order.user.toString() === authUser.userId,
     );
@@ -266,7 +277,7 @@ const updateOrder = async (
         if (payload.coupon !== undefined) {
             const { coupon, discount } = await applyCoupon(
                 payload.coupon,
-                order.totalAmount,
+                order.products as any,
             );
             order.coupon = coupon;
             order.discount = discount;
@@ -298,8 +309,15 @@ const updateOrder = async (
         if (payload.notes !== undefined) {
             order.notes = payload.notes;
         }
-        if (payload.paymentMethod) {
+        // Payment method/status are staff-only controls — a customer editing
+        // their own order must never be able to flip themselves to Paid.
+        const isStaff =
+            authUser?.role === "admin" || authUser?.role === "manager";
+        if (payload.paymentMethod && isStaff) {
             order.paymentMethod = payload.paymentMethod;
+        }
+        if (payload.paymentStatus && isStaff) {
+            order.paymentStatus = payload.paymentStatus;
         }
 
         await order.save({ session });
@@ -365,6 +383,25 @@ const changeOrderStatus = async (
 
     const previousStatus = order.status;
 
+    // Cancelling returns the reserved stock to the catalog exactly once
+    // (the stockRestored marker also protects the delete path below).
+    if (status === "Cancelled" && !order.stockRestored) {
+        for (const item of order.products) {
+            if (item.variant) {
+                await Product.updateOne(
+                    { _id: item.product, "variants.sku": item.variant.sku },
+                    { $inc: { "variants.$.stock": item.quantity } },
+                );
+            } else {
+                await Product.findByIdAndUpdate(item.product, {
+                    $inc: { stock: item.quantity },
+                });
+            }
+        }
+        order.stockRestored = true;
+        await order.save();
+    }
+
     const updatedOrder = await Order.findByIdAndUpdate(
         orderId,
         { status },
@@ -387,6 +424,46 @@ const changeOrderStatus = async (
     });
 
     return updatedOrder;
+};
+
+// Admin-only hard delete. Restores the reserved stock exactly once (an
+// order cancelled through changeOrderStatus already returned it — the
+// stockRestored marker prevents double-restoring) and logs the deletion.
+const deleteOrder = async (orderId: string, authUser: IJwtPayload) => {
+    const order = await Order.checkOrderExist(orderId);
+
+    if (!order.stockRestored) {
+        for (const item of order.products) {
+            if (item.variant) {
+                await Product.updateOne(
+                    { _id: item.product, "variants.sku": item.variant.sku },
+                    { $inc: { "variants.$.stock": item.quantity } },
+                );
+            } else {
+                await Product.findByIdAndUpdate(item.product, {
+                    $inc: { stock: item.quantity },
+                });
+            }
+        }
+    }
+
+    await Order.findByIdAndDelete(orderId);
+
+    await ActivityServices.logActivity({
+        module: ActivityModule.ORDER,
+        type: ActivityType.DELETE,
+        message: `Order ${order.orderId} was deleted`,
+        referenceId: order._id.toString(),
+        reference: order.orderId,
+        performedBy: authUser.userId,
+        metadata: {
+            finalAmount: order.finalAmount,
+            status: order.status,
+            stockRestored: !order.stockRestored,
+        },
+    });
+
+    return { deleted: true, orderId: order.orderId };
 };
 
 // Public order tracking — no auth. Looks up ONLY by the human-friendly
@@ -536,6 +613,7 @@ const getInvoiceData = async (orderId: string, by?: string) => {
 };
 
 export const OrderServices = {
+    deleteOrder,
     getAllOrders,
     getMyOrders,
     getOrderDetails,

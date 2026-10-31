@@ -95,7 +95,7 @@ const createCategory = async (
         type: ActivityType.CREATE,
         message: `Category "${category.name}" was created`,
         referenceId: category._id.toString(),
-        performedBy: authUser.userId,
+        performedBy: authUser?.userId,
     });
 
     return category;
@@ -105,6 +105,7 @@ const updateCategory = async (
     categoryId: string,
     payload: Partial<ICategory>,
     file?: IImageFile,
+    authUser?: IJwtPayload,
 ) => {
     const existing = await Category.checkCategoryExist(categoryId);
 
@@ -158,12 +159,16 @@ const updateCategory = async (
         type: ActivityType.UPDATE,
         message: `Category "${result?.name}" was updated`,
         referenceId: categoryId,
+        performedBy: authUser?.userId,
     });
 
     return result;
 };
 
-const deleteCategory = async (categoryId: string) => {
+const deleteCategory = async (
+    categoryId: string,
+    authUser: IJwtPayload,
+) => {
     const category = await Category.checkCategoryExist(categoryId);
 
     // Check if category has child categories
@@ -184,6 +189,7 @@ const deleteCategory = async (categoryId: string) => {
         type: ActivityType.DELETE,
         message: `Category "${category.name}" was deleted`,
         referenceId: category._id.toString(),
+        performedBy: authUser?.userId,
     });
 
     return category;
