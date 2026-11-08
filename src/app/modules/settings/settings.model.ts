@@ -308,6 +308,15 @@ const policySchema = new Schema(
     { _id: false },
 );
 
+const metaPixelSchema = new Schema(
+    {
+        pixelId: { type: String, default: "", trim: true },
+        isEnabled: { type: Boolean, default: false },
+        testEventCode: { type: String, default: "", trim: true },
+    },
+    { _id: false },
+);
+
 const settingsSchema = new Schema<ISettings, SettingsModel>(
     {
         _id: {
@@ -325,6 +334,7 @@ const settingsSchema = new Schema<ISettings, SettingsModel>(
         limitedOffer: { type: limitedOfferSchema, default: () => ({}) },
         seo: { type: seoSchema, default: () => ({}) },
         policy: { type: policySchema, default: () => ({}) },
+        metaPixel: { type: metaPixelSchema, default: () => ({}) },
     },
     {
         timestamps: true,

@@ -239,6 +239,12 @@ const policyValidationSchema = z.object({
     returnRefund: z.string().max(200_000, "Policy content is too long").optional(),
 });
 
+const metaPixelValidationSchema = z.object({
+    pixelId: z.string().max(50, "Pixel ID is too long").optional(),
+    isEnabled: z.boolean().optional(),
+    testEventCode: z.string().max(50, "Test event code is too long").optional(),
+});
+
 export const sectionBodySchemas: Record<SettingsSection, z.ZodTypeAny> = {
     theme: themeValidationSchema,
     hero: heroValidationSchema,
@@ -250,6 +256,7 @@ export const sectionBodySchemas: Record<SettingsSection, z.ZodTypeAny> = {
     limitedOffer: limitedOfferValidationSchema,
     seo: seoValidationSchema,
     policy: policyValidationSchema,
+    metaPixel: metaPixelValidationSchema,
 };
 
 export const updateBrandFieldsValidationSchema = z.object({

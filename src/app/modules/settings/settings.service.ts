@@ -55,6 +55,15 @@ const getSettings = async (): Promise<ISettings> => {
         (data as any).policy.sections = [];
     }
 
+    // Same for the metaPixel section — old singletons predate it.
+    if (!(data as any).metaPixel) {
+        (data as any).metaPixel = {
+            pixelId: "",
+            isEnabled: false,
+            testEventCode: "",
+        };
+    }
+
     settingsCache.set(data as ISettings);
 
     return data as ISettings;

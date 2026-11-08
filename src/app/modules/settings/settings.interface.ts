@@ -263,6 +263,15 @@ export interface IPolicySection {
 }
 
 // ------------------------------------------------------------
+// Meta Pixel (Facebook Pixel)
+// ------------------------------------------------------------
+export interface IMetaPixelSection {
+    pixelId: string;
+    isEnabled: boolean;
+    testEventCode?: string;
+}
+
+// ------------------------------------------------------------
 // Settings singleton
 // ------------------------------------------------------------
 export interface ISettings extends Document {
@@ -277,6 +286,7 @@ export interface ISettings extends Document {
     limitedOffer: ILimitedOfferSection;
     seo: ISeoSection;
     policy: IPolicySection;
+    metaPixel?: IMetaPixelSection;
     createdAt: Date;
     updatedAt: Date;
 }

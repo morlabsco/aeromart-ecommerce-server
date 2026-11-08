@@ -11,6 +11,7 @@ export const SETTINGS_SECTIONS = [
     "limitedOffer",
     "seo",
     "policy",
+    "metaPixel",
 ] as const;
 
 export type SettingsSection = (typeof SETTINGS_SECTIONS)[number];
