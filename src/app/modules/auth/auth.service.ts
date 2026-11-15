@@ -189,6 +189,7 @@ const forgotPassword = async ({ email }: { email: string }) => {
     try {
         const emailContent = await EmailHelper.createEmailContent(
             {
+                brandName: config.brand_name,
                 otpCode: otp,
                 userName: user.name,
                 // Dev resolves to localhost, production to the live storefront
@@ -199,7 +200,11 @@ const forgotPassword = async ({ email }: { email: string }) => {
             "forgotPassword",
         );
 
-        await EmailHelper.sendEmail(email, emailContent, "Your AeroMart verification code");
+        await EmailHelper.sendEmail(
+            email,
+            emailContent,
+            `Your ${config.brand_name} verification code`,
+        );
     } catch (error) {
         await User.updateOne({ email }, { $unset: { otpToken: 1 } });
 

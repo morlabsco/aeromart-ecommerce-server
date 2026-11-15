@@ -1,10 +1,11 @@
 import crypto from "crypto";
 import Order from "../modules/order/order.model";
+import config from "../config";
 
 /**
  * Generates a human-friendly, UNGUESSABLE order id in the format:
- *   AMXXXXXXXX  (AM + 8 random chars, e.g. "AMY2H7ULPD" → 10 chars total)
- *   "AM" = AeroMart. (The original "DE" prefix predates the rebrand.)
+ *   [PREFIX]XXXXXXXX  (prefix + 8 random chars, e.g. "AMY2H7ULPD")
+ *   Prefix defaults to config.order_prefix (env ORDER_PREFIX) or "AM".
  *
  * The 8-char suffix is cryptographically random (alphanumeric, uppercase),
  * with NO date or sequence encoded — a predictable incrementing sequence would
@@ -14,6 +15,7 @@ import Order from "../modules/order/order.model";
  */
 export const generateOrderId = async (): Promise<string> => {
     const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no I/O/1/0 — avoids look-alike confusion
+    const prefix = (config.order_prefix || "AM").trim().toUpperCase();
 
     for (let attempt = 0; attempt < 5; attempt++) {
         const bytes = crypto.randomBytes(8);
@@ -22,7 +24,7 @@ export const generateOrderId = async (): Promise<string> => {
             suffix += alphabet[bytes[i] % alphabet.length];
         }
 
-        const candidate = `AM${suffix}`;
+        const candidate = `${prefix}${suffix}`;
         const exists = await Order.findOne({ orderId: candidate }).select("_id");
         if (!exists) {
             return candidate;
@@ -35,5 +37,5 @@ export const generateOrderId = async (): Promise<string> => {
         .toString("base64")
         .replace(/[^A-Z0-9]/g, "")
         .slice(0, 8);
-    return `AM${fallback}`;
+    return `${prefix}${fallback}`;
 };

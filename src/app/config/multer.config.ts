@@ -2,6 +2,7 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { cloudinaryUpload } from "./cloudinary.config";
 import multer from "multer";
 import { Request } from "express";
+import config from "./index";
 
 const removeExtension = (filename: string) => {
     return filename.split(".").slice(0, -1).join(".");
@@ -10,7 +11,7 @@ const removeExtension = (filename: string) => {
 const storage = new CloudinaryStorage({
     cloudinary: cloudinaryUpload,
     params: {
-        folder: "/aeromart-ecommerce",
+        folder: `/${(config.cloudinary_folder || "aeromart-ecommerce").replace(/^\/+/, "")}`,
         public_id: (_req: Request, file: Express.Multer.File) =>
             Math.random().toString(36).substring(2) +
             "-" +

@@ -6,6 +6,9 @@ dotenv.config({ path: path.join((process.cwd(), ".env")) });
 export default {
     NODE_ENV: process.env.NODE_ENV,
     port: process.env.PORT,
+    brand_name: process.env.BRAND_NAME || "AeroMart",
+    order_prefix: process.env.ORDER_PREFIX || "AM",
+    cloudinary_folder: process.env.CLOUDINARY_FOLDER || "aeromart-ecommerce",
     db_url: process.env.DB_URL,
     frontend_url: process.env.FRONTEND_URL,
     server_url: process.env.SERVER_URL || `http://localhost:${process.env.PORT || 3001}`,
